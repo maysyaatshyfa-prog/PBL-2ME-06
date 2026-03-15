@@ -1,6 +1,3 @@
-// Nama File: login.blade.php
-// Deskripsi: Halaman login
-// Dibuat oleh: Resika Hutagalung - 3312511124
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +46,12 @@ margin-bottom:25px;
 }
 
 .btn-login{
-background:#0d6efd;
+background:#1a2b49;
+border:none;
+}
+
+.btn-login:hover{
+background:#668bca;
 border:none;
 }
 

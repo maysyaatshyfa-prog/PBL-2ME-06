@@ -1,3 +1,6 @@
 <div>
-    <!-- You must be the change you wish to see in the world. - Mahatma Gandhi -->
+    <h1>MARStay Hotel</h1>
+    <p>Sistem Manajemen Booking dan Reservasi Hotel</p>
+
+    <a href="/rooms">Lihat Kamar</a>
 </div>
