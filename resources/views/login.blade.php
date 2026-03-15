@@ -1,3 +1,7 @@
+// Nama File: login.blade.php
+// Deskripsi: Halaman login
+// Dibuat oleh: Resika Hutagalung - 3312511124
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
