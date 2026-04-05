@@ -7,4 +7,8 @@
         <li><a href="/rooms/3">Kamar Standard</a></li>
     </ul>
 
+<<<<<<< HEAD
 </div>
+=======
+</div>
+>>>>>>> a84a6e7 (menambah tailwind)

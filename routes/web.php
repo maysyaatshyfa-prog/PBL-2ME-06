@@ -12,6 +12,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+<<<<<<< HEAD
+=======
+Route::get('/app', function () {
+return view('app');
+});
+
+>>>>>>> a84a6e7 (menambah tailwind)
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/login', [LoginController::class, 'index']);
