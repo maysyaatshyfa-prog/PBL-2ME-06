@@ -3,9 +3,7 @@
 
     <p>ID Kamar : {{$id}}</p>
 
-    <a href="/booking">Pesan Sekarang</a>
-<<<<<<< HEAD
+    <a href="/login">Pesan Sekarang</a>
+
 </div>
-=======
 </div>
->>>>>>> a84a6e7 (menambah tailwind)

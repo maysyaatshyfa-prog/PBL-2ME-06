@@ -1,30 +1,29 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\http\Controllers\HomeController;
-use App\http\Controllers\LoginController;
-use App\http\Controllers\RoomController;
-use App\http\Controllers\BookingController;
-use App\http\Controllers\AdminController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\AdminController;
 
 
 Route::get('/', function () {
     return view('welcome');
 });
-
-<<<<<<< HEAD
-=======
 Route::get('/app', function () {
 return view('app');
 });
 
->>>>>>> a84a6e7 (menambah tailwind)
 Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/login', [LoginController::class, 'index']);
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'loginPost']);
+Route::get('/logout', [AuthController::class, 'logout']);
 
 Route::get('/rooms', [RoomController::class, 'index']);
 Route::get('/rooms/{id}', [RoomController::class, 'detail']);
 
-Route::get('/booking', [BookingController::class, 'index']);
+Route::get('/booking/{id}', [BookingController::class, 'create'])
+    ->middleware('auth');
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
