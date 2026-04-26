@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\BookingController;
 use App\Models\Reservation;
+use App\Http\Controllers\ReservationController;
+use App\Models\Room;
 use App\Http\Controllers\AdminController;
 
 
