@@ -8,11 +8,11 @@ class RoomController extends Controller
 {
     public function index()
     {
-        return view('rooms');
+        return view('rooms.index'); 
     }
 
-    public function detail($id)
-    {
-        return view('room_detail', compact('id'));
-    }
+    public function type($typeKey)
+{
+    return view('rooms.type', compact('typeKey'));
+}
 }

@@ -73,21 +73,27 @@
         <div class="room-card">
             <img src="/images/STANDAR.jpeg" alt="">
             <h5>Standard Room</h5>
-            <p>Rp.700.000 / malam</p>
-            <button>Lihat Detail</button>
+            <p>Rp.500.000-800.000 / malam</p>
+            <a href="/rooms/standard">
+    <button>Lihat Detail</button>
+</a>
         </div>
         <div class="room-card">
             <img src="/images/DULEXE.jpeg" alt="">
             <h5>Deluxe Room</h5>
-            <p>Rp.1.000.000 / malam</p>
-            <button>Lihat Detail</button>
+            <p>Rp.800.000-1.400.000 / malam</p>
+            <a href="/rooms/deluxe">
+    <button>Lihat Detail</button>
+</a>
         </div>
 
         <div class="room-card">
             <img src="/images/SUITE.jpg" alt="">
             <h5>Suite Room</h5>
-            <p>Rp.1.400.000 / malam</p>
-            <button>Lihat Detail</button>
+            <p>Rp.1.400.000-2.200.000 / malam</p>
+            <a href="/rooms/suite">
+    <button>Lihat Detail</button>
+</a>
         </div>
     </div>
 </div>
@@ -100,12 +106,12 @@
         <div class="superior-card">
             <i class="bi bi-wifi"></i>
             <h5>Free WiFi</h5>
-            <p>Koneksi stabil 24 jam</p> 
+            <p>Koneksi stabil 24 jam</p>
         </div>
         <div class="superior-card">
             <i class="bi bi-wind"></i>
             <h5>Full AC</h5>
-            <p>Kesejukan di setiap sudut</p>  
+            <p>Kesejukan di setiap sudut</p>
         </div>
 
         <div class="superior-card">
@@ -143,6 +149,129 @@
             <img src="/images/rooftop.jpg">
             <img src="/images/spa.jpg">
             <img src="/images/gym.jfif">
+        </div>
+    </div>
+</section>
+<section class="section-testimoni">
+    <div class="testimoni-container">
+
+        <h2>Guest Reviews</h2>
+
+        <div class="slider">
+            <div class="slide-track">
+
+                <!-- CARD 1 -->
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <img src="{{ asset('images/Maysya.jpg') }}" class="profile">
+                        <div>
+                            <h5>Maysya Putri Widiyati</h5>
+                            <small>Batam, Indonesia</small>
+                        </div>
+                    </div>
+
+                    <div class="stars">★★★★★</div>
+                    <p class="comment">Kamar sangat nyaman dan bersih. Staff juga ramah.</p>
+                </div>
+
+                <!-- CARD 2 -->
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <img src="{{ asset('images/Resika.jpeg') }}" class="profile">
+                        <div>
+                            <h5>Resika Hutagalung</h5>
+                            <small>Singapore</small>
+                        </div>
+                    </div>
+
+                    <div class="stars">★★★★★</div>
+                    <p class="comment">Amazing experience. Suite room and great service.</p>
+                </div>
+
+                <!-- CARD 3 -->
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <img src="{{ asset('images/Hilda.jpg') }}" class="profile">
+                        <div>
+                            <h5>Hilda Tri Utami</h5>
+                            <small>Jakarta</small>
+                        </div>
+                    </div>
+
+                    <div class="stars">★★★★★</div>
+                    <p class="comment">Ini adalah hotel terbaik yang pernah saya pesan.</p>
+                </div>
+
+                <!-- DUPLIKAT -->
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <img src="{{ asset('images/Maysya.jpg') }}" class="profile">
+                        <div>
+                            <h5>Maysya Putri Widiyati</h5>
+                            <small>Batam, Indonesia</small>
+                        </div>
+                    </div>
+
+                    <div class="stars">★★★★★</div>
+                    <p class="comment">Kamar sangat nyaman dan bersih. Staff juga ramah.</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <img src="{{ asset('images/Resika.jpeg') }}" class="profile">
+                        <div>
+                            <h5>Resika Hutagalung</h5>
+                            <small>Singapore</small>
+                        </div>
+                    </div>
+
+                    <div class="stars">★★★★★</div>
+                    <p class="comment">Amazing experience. Suite room and great service.</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <img src="{{ asset('images/Hilda.jpg') }}" class="profile">
+                        <div>
+                            <h5>Hilda Tri Utami</h5>
+                            <small>Jakarta</small>
+                        </div>
+                    </div>
+
+                    <div class="stars">★★★★★</div>
+                    <p class="comment">Ini adalah hotel terbaik yang pernah saya pesan.</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+<section class="promo-section">
+    <div class="container">
+
+        <h2 class="section-title">Promo Spesial</h2>
+
+        <div class="promo-container">
+
+            <div class="promo-card">
+                <h4>🔥 Diskon 50% Deluxe Room</h4>
+                <p>Booking sekarang untuk periode tertentu!</p>
+                <span class="badge">Aktif</span>
+            </div>
+
+            <div class="promo-card">
+                <h4>🎉 Weekend Deal</h4>
+                <p>Potongan Rp200.000 untuk minimal 2 malam.</p>
+                <span class="badge">Terbatas</span>
+            </div>
+
+            <div class="promo-card">
+                <h4>👑 Member Special</h4>
+                <p>Tambahan diskon 10% untuk member.</p>
+                <span class="badge">Exclusive</span>
+            </div>
+
         </div>
     </div>
 </section>

@@ -161,23 +161,6 @@
         </div>
     </div>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-
-        <div class="footer-left">
-            <div><i class="bi bi-geo-alt"></i> Jl. S.Parman No.124 Batam, Indonesia</div>
-            <div><i class="bi bi-telephone"></i> +62 812-7209-6252</div>
-            <div><i class="bi bi-envelope"></i> info@marstay.com</div>
-        </div>
-
-        <div class="footer-right">
-            <a href="#"><i class="bi bi-instagram"></i></a>
-            <a href="#"><i class="bi bi-facebook"></i></a>
-            <a href="#"><i class="bi bi-twitter"></i></a>
-        </div>
-
-    </footer>
-
 </body>
 
 @endsection

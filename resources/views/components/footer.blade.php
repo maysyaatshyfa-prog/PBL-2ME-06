@@ -17,4 +17,7 @@
             <i class="bi bi-facebook"></i>
             <i class="bi bi-twitter"></i>
         </div>
+        <div class="footer-bottom">
+        © 2026 Marstay Hotel. All Rights Reserved.
+    </div>
     </footer>
