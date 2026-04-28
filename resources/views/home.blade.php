@@ -21,12 +21,12 @@
                 Temukan Kamar Terbaik untuk Anda
             </p>
         </div>
-
         <div class="search-labels">
             <span>Check-in</span>
             <span>Check-out</span>
             <span>Tamu</span>
         </div>
+
         <div class="search-box">
 
             <input type="date" class="form-control" placeholder="Check-In">
@@ -38,7 +38,6 @@
                     <span id="guestText">2 Dewasa, 0 Anak</span>
                 </div>
 
-                <!--dropdown-->
                 <div class="guest-dropdown" id="guestDropdown">
                     <div class="guest-row">
                         <span>Dewasa</span>
@@ -63,7 +62,6 @@
             <button class="btn-search">Cari Kamar</button>
         </div>
 
-    </div>
 </section>
 <div class="room-section">
 
@@ -75,16 +73,16 @@
             <h5>Standard Room</h5>
             <p>Rp.500.000-800.000 / malam</p>
             <a href="/rooms/standard">
-    <button>Lihat Detail</button>
-</a>
+                <button>Lihat Detail</button>
+            </a>
         </div>
         <div class="room-card">
             <img src="/images/DULEXE.jpeg" alt="">
             <h5>Deluxe Room</h5>
             <p>Rp.800.000-1.400.000 / malam</p>
             <a href="/rooms/deluxe">
-    <button>Lihat Detail</button>
-</a>
+                <button>Lihat Detail</button>
+            </a>
         </div>
 
         <div class="room-card">
@@ -92,8 +90,8 @@
             <h5>Suite Room</h5>
             <p>Rp.1.400.000-2.200.000 / malam</p>
             <a href="/rooms/suite">
-    <button>Lihat Detail</button>
-</a>
+                <button>Lihat Detail</button>
+            </a>
         </div>
     </div>
 </div>
@@ -134,6 +132,47 @@
             <h5>Kolam Renang</h5>
             <p>Segar dan eksklusif</p>
         </div>
+    </div>
+</section>
+<section class="promo-section">
+    <div class="container">
+
+        <h2 class="section-title">Promo Spesial</h2>
+
+        <!-- Carousel -->
+        <div id="promoCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+
+            <div class="carousel-inner">
+
+                <!-- Slide 1 -->
+                <div class="carousel-item active">
+                    <<img src="{{ asset('images/iklan1.png') }}" class="d-block w-100 promo-img">
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="carousel-item">
+                    <img src="{{ asset('images/iklan2.png') }}" class="d-block w-100 promo-img">
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="carousel-item">
+                    <img src="{{ asset('images/iklan3.png') }}" class="d-block w-100 promo-img">
+                </div>
+
+            </div>
+
+            <!-- tombol kiri -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#promoCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+
+            <!-- tombol kanan -->
+            <button class="carousel-control-next" type="button" data-bs-target="#promoCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+
+        </div>
+
     </div>
 </section>
 <section class="gallery-section">
@@ -245,34 +284,6 @@
             </div>
         </div>
 
-    </div>
-</section>
-<section class="promo-section">
-    <div class="container">
-
-        <h2 class="section-title">Promo Spesial</h2>
-
-        <div class="promo-container">
-
-            <div class="promo-card">
-                <h4>🔥 Diskon 50% Deluxe Room</h4>
-                <p>Booking sekarang untuk periode tertentu!</p>
-                <span class="badge">Aktif</span>
-            </div>
-
-            <div class="promo-card">
-                <h4>🎉 Weekend Deal</h4>
-                <p>Potongan Rp200.000 untuk minimal 2 malam.</p>
-                <span class="badge">Terbatas</span>
-            </div>
-
-            <div class="promo-card">
-                <h4>👑 Member Special</h4>
-                <p>Tambahan diskon 10% untuk member.</p>
-                <span class="badge">Exclusive</span>
-            </div>
-
-        </div>
     </div>
 </section>
 

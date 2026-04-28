@@ -15,10 +15,7 @@
             <div class="text-center mb-2">
                 <h5>Selamat datang di</h5>
 
-                <img src="{{ asset('images/MARSTAY LOGO.png') }}"
-                    alt="Logo MARStay"
-                    style="width:150px;"
-                    class="mb-1">
+                <img src="{{ asset('images/MARSTAY LOGO.png') }}" alt="Logo MARStay" style="width:150px;" class="mb-1">
 
                 <small class="d-block text-center mt-1">
                     Masuk untuk melanjutkan ke akun Anda
@@ -26,13 +23,21 @@
             </div>
 
             <!-- FORM LOGIN -->
-            <form>
+            @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+            @endif
+            <form method="POST" action="/login">
+                @csrf
+
                 <div class="mb-3">
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="bi bi-person"></i>
                         </span>
-                        <input type="text" class="form-control" placeholder="Email atau Username">
+
+                        <input type="email" name="email" class="form-control" placeholder="Email">
                     </div>
                 </div>
 
@@ -42,7 +47,7 @@
                             <i class="bi bi-lock"></i>
                         </span>
 
-                        <input type="password" class="form-control" placeholder="Password">
+                        <input type="password" name="password" class="form-control" placeholder="Password">
 
                         <span class="input-group-text">
                             <i class="bi bi-eye"></i>
@@ -50,17 +55,7 @@
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-between mb-3">
-                    <div>
-                        <input type="checkbox"> Ingat saya
-                    </div>
-
-                    <a href="#" class="text-warning text-decoration-none link-auth">
-                        Lupa Password?
-                    </a>
-                </div>
-
-                <button class="btn btn-marstay w-100">
+                <button type="submit" class="btn btn-marstay w-100">
                     Masuk
                 </button>
             </form>
@@ -96,10 +91,7 @@
             <div class="text-center mb-4">
                 <h5>Buat akun</h5>
 
-                <img src="{{ asset('images/MARSTAY LOGO.png') }}"
-                    alt="Logo MARStay"
-                    style="width:150px;"
-                    class="mb-2">
+                <img src="{{ asset('images/MARSTAY LOGO.png') }}" alt="Logo MARStay" style="width:150px;" class="mb-2">
             </div>
 
             <!-- FORM REGISTER -->

@@ -27,13 +27,14 @@ Route::get('/dashboard', function () {
         'kamarTersedia',
         'reservations'
     ));
-})->name('dashboard');
+})->middleware('auth')->name('dashboard');
 
-Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
+    ->middleware('auth');
 
 Route::get('/login', fn () => view('auth', ['page' => 'login']));
 Route::get('/register', fn () => view('auth', ['page' => 'register']));
-Route::post('/login', [AuthController::class, 'loginPost']);
+Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout']);
 
 // LIST KAMAR
@@ -48,6 +49,7 @@ Route::get('/booking/{id}', [BookingController::class, 'create'])
     ->name('booking.create');
 
 Route::get('/bookinghistory', [BookingController::class, 'index'])
+    ->middleware('auth')
     ->name('bookinghistory.index');
 
 

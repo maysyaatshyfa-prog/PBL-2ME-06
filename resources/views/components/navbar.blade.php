@@ -8,9 +8,8 @@
     <!--MENU-->
     <div class="navbar-right">
         <a href="/">Beranda</a>
-        <a href="#">Kamar</a>
 
-        @if(request('login'))
+        @if(Auth::check())
         <a href="/bookinghistory">Reservasi Saya</a>
         <a href="/login" class="btn-masuk">Logout</a>
         @else
