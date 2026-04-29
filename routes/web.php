@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomVariantController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\AdminController;
@@ -38,8 +39,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout']);
 
 // LIST KAMAR
-Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
-
+Route::get('/rooms', [RoomVariantController::class, 'index'])->name('rooms.index');
 // DETAIL KAMAR
 Route::get('/rooms/{type}', [RoomController::class, 'type'])
     ->name('rooms.type');

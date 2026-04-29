@@ -9,7 +9,10 @@ class RoomController extends Controller
 {
     public function index()
     {
-        $rooms = Room::all();
+        $checkin = $request->checkin;
+        $checkout = $request->checkout;
+        $adult = $request->adult;
+        $child = $request->child;
 
         return view('rooms.index', compact('rooms'));
     }
