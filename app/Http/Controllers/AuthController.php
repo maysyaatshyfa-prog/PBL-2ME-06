@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -14,16 +15,15 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        if(Auth::attempt([
-            'email' => $request->email,
-            'password' => $request->password
-        ])){
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && $user->password == $request->password) {
+            Auth::login($user);
             return redirect('/');
         }
 
         return back()->with('error', 'Email atau password salah');
     }
-
     public function dashboard()
     {
         return view('bookinghistory');

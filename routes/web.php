@@ -63,4 +63,5 @@ Route::post('/reservasi/assign/{id}', [ReservationController::class, 'assign'])
     ->name('reservasi.assign');
 
 
-Route::view('/tugas', 'tugas');
+Route::get('/room/{id}', [RoomController::class, 'show'])
+    ->name('room.detail');

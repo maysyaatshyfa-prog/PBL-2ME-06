@@ -4,56 +4,44 @@
 {{-- Navbar --}}
 @include('components.navbar')
 
-<form method="GET" action="{{ route('rooms.index') }}">
+<form method="GET" action="{{ route('rooms.index') }}" class="rooms-search">
+    <input type="hidden" name="adult" id="input_adult" value="2">
+    <input type="hidden" name="child" id="input_child" value="0">
+    <div class="search-box">
+        <input type="date" name="checkin" class="form-control" value="{{ request('checkin') }}">
+        <input type="date" name="checkout" class="form-control" value="{{ request('checkout') }}">
 
+        <div class="guest-wrapper">
+            <div class="guest-box" onclick="toggleGuest(event)">
+                <i class="bi bi-person"></i>
+                <span id="guestText">{{ request('adult', 2) }} Dewasa, {{ request('child', 0) }} Anak</span>
+            </div>
+        </div>
 
-    <input type="hidden" name="adult" id="input_adult" value="{{ request('adult', 2) }}">
-    <input type="hidden" name="child" id="input_child" value="{{ request('child', 0) }}">
+        <div class="guest-dropdown" id="guestDropdown" onclick="event.stopPropagation()">
 
-    <div class="rooms-search">
-        <div class="search-box">
-
-            <input type="date" name="checkin" class="form-control" value="{{ request('checkin') }}">
-
-            <input type="date" name="checkout" class="form-control" value="{{ request('checkout') }}">
-
-            <div class="guest-wrapper">
-                <div class="guest-box" onclick="toggleGuest(event)">
-                    <i class="bi bi-person"></i>
-
-                    <span id="guestText">
-                        {{ request('adult', 2) }} Dewasa, {{ request('child', 0) }} Anak
-                    </span>
-                </div>
-
-                <div class="guest-dropdown" id="guestDropdown" onclick="event.stopPropagation()">
-
-                    <div class="guest-row">
-                        <span>Dewasa</span>
-                        <div class="counter">
-                            <button type="button" onclick="changeValue('adult', -1)">-</button>
-                            <span id="adult">{{ request('adult', 2) }}</span>
-                            <button type="button" onclick="changeValue('adult', 1)">+</button>
-                        </div>
-                    </div>
-
-                    <div class="guest-row">
-                        <span>Anak</span>
-                        <div class="counter">
-                            <button type="button" onclick="changeValue('child', -1)">-</button>
-                            <span id="child">{{ request('child', 0) }}</span>
-                            <button type="button" onclick="changeValue('child', 1)">+</button>
-                        </div>
-                    </div>
-
+            <div class="guest-row">
+                <span>Dewasa</span>
+                <div class="counter">
+                    <button type="button" onclick="changeValue('adult', -1)">-</button>
+                    <span id="adult">{{ request('adult', 2) }}</span>
+                    <button type="button" onclick="changeValue('adult', 1)">+</button>
                 </div>
             </div>
 
-            <button type="submit" class="btn-search">Cari Kamar</button>
+            <div class="guest-row">
+                <span>Anak</span>
+                <div class="counter">
+                    <button type="button" onclick="changeValue('child', -1)">-</button>
+                    <span id="child">{{ request('child', 0) }}</span>
+                    <button type="button" onclick="changeValue('child', 1)">+</button>
+                </div>
+            </div>
+
         </div>
+
+        <button type="submit" class="btn-search">Cari Kamar</button>
     </div>
-
-
 </form>
 
 <div class="container mt-4">
@@ -104,7 +92,10 @@
                         </p>
                     </div>
                     <div class="col-md-3 text-end">
-                        <a href="/rooms/{{ $room->id }}" class="btn btn-primary">Pilih</a>
+                        <a href="{{ route('room.detail', $room->id) }}?checkin={{ request('checkin') }}&checkout={{ request('checkout') }}&adult={{ request('adult',2) }}&child={{ request('child',0) }}"
+                            class="btn btn-primary">
+                            Pilih
+                        </a>
                     </div>
                 </div>
             </div>
@@ -116,54 +107,48 @@
 
 @push('scripts')
 <script>
-    let adult = parseInt(document.getElementById('input_adult') ? .value || 2);
-    let child = parseInt(document.getElementById('input_child') ? .value || 0);
+    let adult = parseInt(document.getElementById("input_adult").value) || 2;
+    let child = parseInt(document.getElementById("input_child").value) || 0;
 
     function toggleGuest(event) {
         event.stopPropagation();
 
-        const dropdown = document.getElementById('guestDropdown');
+        const dropdown = document.getElementById("guestDropdown");
+
         dropdown.style.display =
-            dropdown.style.display === 'block' ? 'none' : 'block';
+            dropdown.style.display === "block" ? "none" : "block";
     }
 
     function changeValue(type, val) {
 
-        if (type === 'adult') {
+        if (type === "adult") {
             adult = Math.max(1, adult + val);
-            document.getElementById('adult').innerText = adult;
-            document.getElementById('input_adult').value = adult;
+            document.getElementById("adult").innerText = adult;
+            document.getElementById("input_adult").value = adult;
         }
 
-        if (type === 'child') {
+        if (type === "child") {
             child = Math.max(0, child + val);
-            document.getElementById('child').innerText = child;
-            document.getElementById('input_child').value = child;
+            document.getElementById("child").innerText = child;
+            document.getElementById("input_child").value = child;
         }
 
-        document.getElementById('guestText').innerText =
-            `${adult} Dewasa, ${child} Anak`;
+        document.getElementById("guestText").innerText =
+            adult + " Dewasa, " + child + " Anak";
     }
 
-    // klik luar tutup dropdown
-    document.addEventListener('click', function () {
-        document.getElementById('guestDropdown').style.display = 'none';
+    document.addEventListener("click", function () {
+        document.getElementById("guestDropdown").style.display = "none";
     });
-    // Script untuk Price Range
-    const priceRange = document.getElementById('priceRange');
-    const priceValue = document.getElementById('priceValue');
+
+    const priceRange = document.getElementById("priceRange");
+    const priceValue = document.getElementById("priceValue");
 
     if (priceRange) {
-        priceRange.addEventListener('input', function () {
-            let harga = Number(this.value).toLocaleString('id-ID');
-            priceValue.innerText = 'Rp ' + harga;
+        priceRange.addEventListener("input", function () {
+            let harga = Number(this.value).toLocaleString("id-ID");
+            priceValue.innerText = "Rp " + harga;
         });
-    }
-
-    // Fungsi Toggle Guest (Tambahkan jika belum ada)
-    function toggleGuest() {
-        const dropdown = document.getElementById('guestDropdown');
-        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
     }
 </script>
 @endpush

@@ -10,8 +10,6 @@
 <!-- HERO -->
 <section class="hero-section">
     <div class="container text-center">
-
-        <!-- TEKS -->
         <div class="hero-text">
             <h1 class="hero-title">
                 Booking Hotel Mudah <br>
@@ -21,65 +19,54 @@
                 Temukan Kamar Terbaik untuk Anda
             </p>
         </div>
+    </div>
 
+    <div class="main-search-wrapper">
         <div class="search-labels">
             <span>Check-in</span>
             <span>Check-out</span>
             <span>Tamu</span>
         </div>
 
-        <!-- FORM (dipisah jelas) -->
         <form method="GET" action="{{ route('rooms.index') }}" class="rooms-search">
-
-            <!-- hidden input -->
-            <input type="hidden" name="adult" id="input_adult" value="{{ request('adult', 2) }}">
-            <input type="hidden" name="child" id="input_child" value="{{ request('child', 0) }}">
-
+            <input type="hidden" name="adult" id="input_adult" value="2">
+            <input type="hidden" name="child" id="input_child" value="0">
             <div class="search-box">
-
-                <!-- tanggal -->
                 <input type="date" name="checkin" class="form-control" value="{{ request('checkin') }}">
-
                 <input type="date" name="checkout" class="form-control" value="{{ request('checkout') }}">
 
-                <!-- guest -->
                 <div class="guest-wrapper">
                     <div class="guest-box" onclick="toggleGuest(event)">
                         <i class="bi bi-person"></i>
-                        <span id="guestText">
-                            {{ request('adult', 2) }} Dewasa, {{ request('child', 0) }} Anak
-                        </span>
-                    </div>
-
-                    <div class="guest-dropdown" id="guestDropdown" onclick="event.stopPropagation()">
-
-                        <div class="guest-row">
-                            <span>Dewasa</span>
-                            <div class="counter">
-                                <button type="button" onclick="changeValue('adult', -1)">-</button>
-                                <span id="adult">{{ request('adult', 2) }}</span>
-                                <button type="button" onclick="changeValue('adult', 1)">+</button>
-                            </div>
-                        </div>
-
-                        <div class="guest-row">
-                            <span>Anak</span>
-                            <div class="counter">
-                                <button type="button" onclick="changeValue('child', -1)">-</button>
-                                <span id="child">{{ request('child', 0) }}</span>
-                                <button type="button" onclick="changeValue('child', 1)">+</button>
-                            </div>
-                        </div>
-
+                        <span id="guestText">{{ request('adult', 2) }} Dewasa, {{ request('child', 0) }} Anak</span>
                     </div>
                 </div>
 
-                <!-- tombol -->
-                <button type="submit" class="btn-search">Cari Kamar</button>
+                <div class="guest-dropdown" id="guestDropdown" onclick="event.stopPropagation()">
 
+                    <div class="guest-row">
+                        <span>Dewasa</span>
+                        <div class="counter">
+                            <button type="button" onclick="changeValue('adult', -1)">-</button>
+                            <span id="adult">{{ request('adult', 2) }}</span>
+                            <button type="button" onclick="changeValue('adult', 1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="guest-row">
+                        <span>Anak</span>
+                        <div class="counter">
+                            <button type="button" onclick="changeValue('child', -1)">-</button>
+                            <span id="child">{{ request('child', 0) }}</span>
+                            <button type="button" onclick="changeValue('child', 1)">+</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn-search">Cari Kamar</button>
             </div>
         </form>
-
     </div>
 </section>
 <div class="room-section">
@@ -319,32 +306,32 @@
     function toggleGuest(event) {
         event.stopPropagation();
 
-        const dropdown = document.getElementById('guestDropdown');
-        dropdown.style.display =
-            dropdown.style.display === 'block' ? 'none' : 'block';
+        const box = document.getElementById("guestDropdown");
+
+        box.style.display =
+            box.style.display === "block" ? "none" : "block";
     }
 
     function changeValue(type, val) {
 
-        if (type === 'adult') {
+        if (type === "adult") {
             adult = Math.max(1, adult + val);
-            document.getElementById('adult').innerText = adult;
-            document.getElementById('input_adult').value = adult;
+            document.getElementById("adult").innerText = adult;
+            document.getElementById("input_adult").value = adult;
         }
 
-        if (type === 'child') {
+        if (type === "child") {
             child = Math.max(0, child + val);
-            document.getElementById('child').innerText = child;
-            document.getElementById('input_child').value = child;
+            document.getElementById("child").innerText = child;
+            document.getElementById("input_child").value = child;
         }
 
-        document.getElementById('guestText').innerText =
-            `${adult} Dewasa, ${child} Anak`;
+        document.getElementById("guestText").innerText =
+            adult + " Dewasa, " + child + " Anak";
     }
 
-    // klik luar = tutup dropdown
-    document.addEventListener('click', function () {
-        document.getElementById('guestDropdown').style.display = 'none';
+    document.addEventListener("click", function () {
+        document.getElementById("guestDropdown").style.display = "none";
     });
 </script>
 @endpush
