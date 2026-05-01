@@ -47,17 +47,17 @@ Route::get('/rooms/{type}', [RoomController::class, 'type'])
 Route::get('/booking/{id}', [BookingController::class, 'create'])
     ->middleware('auth')
     ->name('booking.create');
+    
+Route::post('/booking/confirm', [BookingController::class, 'confirm'])->name('booking.confirm');
 
 Route::get('/bookinghistory', [BookingController::class, 'index'])
     ->middleware('auth')
     ->name('bookinghistory.index');
-
-
+    
+Route::get('/reservasi/form', [ReservationController::class, 'form'])->name('reservation.form');
 Route::get('/reservasi', [ReservationController::class, 'index'])
     ->name('reservasi.index');
 
-Route::post('/reservasi', [ReservationController::class, 'store'])
-    ->name('reservasi.store');
 
 Route::post('/reservasi/assign/{id}', [ReservationController::class, 'assign'])
     ->name('reservasi.assign');

@@ -71,7 +71,7 @@
                             <li>Pembatalan sesuai syarat hotel</li>
                         </ul>
                     </div>
-                </div> <!-- PENUTUP detail-left (PENTING: Harus di sini) -->
+                </div>
 
                 <!-- RIGHT SIDEBAR -->
                 <div class="detail-right">
@@ -116,17 +116,24 @@
                             <h2>Rp {{ number_format($variant->price * $night,0,',','.') }}</h2>
                         </div>
 
-                        <a href="/reservation-form" class="btn-book">Pesan Sekarang</a>
-
+                        <a href="{{ route('reservation.form', [
+                            'variant_id' => $variant->id,
+                            'checkin' => request('checkin'),
+                            'checkout' => request('checkout'),
+                            'adult' => request('adult', 2),
+                            'child' => request('child', 0)
+                             ]) }}" class="btn-book">
+                            Pesan Sekarang
+                        </a>
                         <a href="/rooms?checkin={{ request('checkin') }}&checkout={{ request('checkout') }}&adult={{ request('adult',2) }}&child={{ request('child',0) }}"
                             class="change-date">
                             Ubah Pencarian
                         </a>
                     </div>
-                </div> <!-- PENUTUP detail-right -->
+                </div>
 
-            </div> <!-- PENUTUP detail-grid -->
-        </div> <!-- PENUTUP container -->
+            </div>
+        </div>
     </section>
 
 </main>
