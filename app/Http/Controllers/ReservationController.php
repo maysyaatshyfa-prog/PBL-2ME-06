@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RoomVariant;
-use App\Models\Reservation; // ✔ FIX: sebelumnya belum ada
+use App\Models\Reservation; 
 use Carbon\Carbon;
 
 class ReservationController extends Controller

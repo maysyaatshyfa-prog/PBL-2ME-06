@@ -33,10 +33,17 @@ Route::get('/dashboard', function () {
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
     ->middleware('auth');
 
-Route::get('/login', fn () => view('auth', ['page' => 'login']));
-Route::get('/register', fn () => view('auth', ['page' => 'register']));
+// --- LOGIN USER/TAMU ---
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/logout', [AuthController::class, 'logout']);
+
+// --- LOGIN ADMIN ---
+Route::get('/admin/login', [AuthController::class, 'showAdminLogin'])->name('admin.login');
+Route::post('/admin/login', [AuthController::class, 'adminLogin']);
+
+// --- REGISTER & LOGOUT ---
+Route::get('/register', fn () => view('auth', ['page' => 'register', 'role' => 'user']));
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // LIST KAMAR
 Route::get('/rooms', [RoomVariantController::class, 'index'])->name('rooms.index');

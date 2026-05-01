@@ -1,99 +1,104 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservasi</title>
+@section('title', 'Reservasi')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="styles/style_resika.css">
-    <link rel="stylesheet" href="styles/style_maysya.css">
-</head>
+@section('content')
 
-<body class="dashboard-page">
+<div class="layout">
 
-    <div class="layout">
+    @include('components.sidebar')
 
-        <!-- SIDEBAR -->
-        <div class="sidebar">
-            <h4 class="text-center py-4 text-white">Dashboard</h4>
+    <!-- MAIN CONTENT -->
+    <div class="main p-4">
+
+        <h4 class="mb-4 fw-bold">Reservasi</h4>
+
+        <!-- FILTER -->
+        <div class="mb-3">
+            <div class="section-title d-inline-block">Filter Status</div>
+            <select class="form-select form-select-sm d-inline-block w-auto ms-2">
+                <option>Semua</option>
+                <option>Menunggu</option>
+                <option>Selesai</option>
+            </select>
         </div>
 
-        <!-- CONTENT -->
-        <div class="main-content p-4 w-100">
+        <!-- TABLE RESERVASI -->
+        <div class="card mb-4 shadow-sm" style="border-radius: 10px;">
+            <div class="card-body">
+                
+                <div class="table-responsive">
+                    <table class="table table-hover text-center align-middle mb-0">
+                        <thead class="text-muted" style="font-size: 13px;">
+                            <tr>
+                                <th>Nama Tamu</th>
+                                <th>Tipe Kamar</th>
+                                <th>Nomor Kamar</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
 
-            <h4 class="mb-3 fw-bold">Reservasi</h4>
+                        <tbody>
+                            @if($reservations->isEmpty())
+                                <tr>
+                                    <td colspan="5" class="py-5 text-muted">
+                                        <i class="bi bi-inbox d-block mb-2" style="font-size: 2rem;"></i>
+                                        Belum ada data reservasi
+                                    </td>
+                                </tr>
+                            @else
+                                @foreach($reservations as $res)
+                                    <tr>
+                                        <td class="fw-semibold">{{ $res->user->name ?? '-' }}</td>
+                                        <td>{{ $res->room->type ?? '-' }}</td>
+                                        <td>
+                                            <span class="badge bg-light text-dark border">
+                                                {{ $res->room->room_number ?? 'Belum Diatur' }}
+                                            </span>
+                                        </td>
 
-            <!-- FILTER -->
-            <div class="mb-3">
-                <label class="fw-semibold">Filter Status</label>
-                <select class="form-select form-select-sm d-inline-block w-auto ms-2">
-                    <option>Semua</option>
-                    <option>Menunggu</option>
-                    <option>Selesai</option>
-                </select>
+                                        <!-- STATUS -->
+                                        <td>
+                                            @if($res->status == 'menunggu')
+                                                <span class="badge bg-warning text-dark px-3">Menunggu</span>
+                                            @else
+                                                <span class="badge bg-success px-3">Selesai</span>
+                                            @endif
+                                        </td>
+
+                                        <!-- AKSI -->
+                                        <td>
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <button class="btn btn-sm btn-dark">
+                                                    <i class="bi bi-door-open me-1"></i> Assign Kamar
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
+        </div>
 
-            <!-- TABLE -->
-            <div class="card p-3 shadow-sm" style="border-radius: 10px;">
-
-                <table class="table table-hover text-center align-middle mb-0">
-
-                    <thead style="font-size: 13px;">
-                        <tr>
-                            <th>Nama</th>
-                            <th>Tipe Kamar</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @if($reservations->isEmpty())
-                        <tr>
-                            <td colspan="5" class="py-5 text-muted">
-                                Belum ada reservasi
-                            </td>
-                        </tr>
-                        @else
-                        @foreach($reservations as $res)
-                        <tr>
-                            <td>{{ $res->user->name ?? '-' }}</td>
-                            <td>{{ $res->room->type ?? '-' }}</td>
-                            <td>{{ $res->room->room_number ?? '-' }}</td>
-
-                            <!-- STATUS -->
-                            <td>
-                                @if($res->status == 'menunggu')
-                                <span class="badge bg-warning text-dark">Menunggu</span>
-                                @else
-                                <span class="badge bg-success">Selesai</span>
-                                @endif
-                            </td>
-
-                            <!-- AKSI -->
-                            <td>
-                                <button class="btn btn-sm btn-outline-dark">
-                                    Assign Kamar
-                                </button>
-                            </td>
-                        </tr>
-                        @endforeach
-                        @endif
-                    </tbody>
-
-                </table>
-
+        <!-- ACTION TAMBAHAN -->
+        <div class="card border-0 bg-light">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <span class="text-muted small">Menampilkan {{ $reservations->count() }} data terbaru</span>
+                <button class="btn btn-outline-dark btn-sm">
+                    <i class="bi bi-download me-1"></i> Export Laporan
+                </button>
             </div>
         </div>
 
     </div>
+</div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-
-</html>
+@endsection
