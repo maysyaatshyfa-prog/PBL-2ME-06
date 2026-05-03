@@ -12,22 +12,6 @@ use App\Http\Controllers\ReservationController;
 
 Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/dashboard', function () {
-
-    $totalKamar = \App\Models\Room::count();
-    $kamarTersedia = \App\Models\Room::count();
-
-    $reservations = \App\Models\Reservation::with('user', 'room')
-        ->latest()
-        ->take(5)
-        ->get();
-
-    return view('admin.dashboard', compact(
-        'totalKamar',
-        'kamarTersedia',
-        'reservations'
-    ));
-})->middleware('auth')->name('dashboard');
 
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
     ->middleware('auth');
@@ -81,6 +65,7 @@ Route::get('/admin/kelola_kamar', [AdminController::class, 'kelolaKamar'])
 // --- PEMBAYARAN TAMU  ---
 Route::get('/payment/{id}', [BookingController::class, 'confirm'])->name('payment.page');
 Route::post('/payment/confirm/{id}', [BookingController::class, 'storePayment'])->name('payment.store');
+
   // --- ROUTE UNTUK ADMIN PEMBAYARAN & PEMBATALAN ---
 Route::middleware('auth')->group(function () {
     Route::get('/admin/pembayaran', [AdminController::class, 'pembayaran'])->name('admin.pembayaran');
