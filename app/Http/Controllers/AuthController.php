@@ -8,34 +8,43 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    // MENAMPILKAN LOGIN USER 
+    // TAMPIL LOGIN USER
     public function showLogin()
     {
-        return view('auth', ['page' => 'login', 'role' => 'user']);
+        return view('auth', [
+            'page' => 'login',
+            'role' => 'user'
+        ]);
     }
 
     // PROSES LOGIN USER
     public function login(Request $request)
     {
-        // Cari user berdasarkan email
         $user = User::where('email', $request->email)->first();
 
-        if ($user && $user->password === $request->password) {
-            Auth::login($user); 
+        if ($user && $user->password == $request->password) {
 
-            if ($user->role === 'user') {
-                return redirect('/');
+            Auth::login($user);
+
+            // kalau admin masuk dashboard
+            if ($user->role == 'admin') {
+                return redirect('/admin/dashboard');
             }
-            return redirect('/admin/dashboard');
+
+            // kalau user biasa ke home
+            return redirect('/');
         }
 
         return back()->with('error', 'Email atau password salah');
     }
 
-    // MENAMPILKAN LOGIN ADMIN 
+    // TAMPIL LOGIN ADMIN
     public function showAdminLogin()
     {
-        return view('auth', ['page' => 'login', 'role' => 'admin']);
+        return view('auth', [
+            'page' => 'login',
+            'role' => 'admin'
+        ]);
     }
 
     // PROSES LOGIN ADMIN
@@ -43,27 +52,25 @@ class AuthController extends Controller
     {
         $user = User::where('email', $request->email)->first();
 
-        if ($user && $user->password === $request->password) {
-            if ($user->role === 'admin') {
+        if ($user && $user->password == $request->password) {
+
+            if ($user->role == 'admin') {
+
                 Auth::login($user);
+
                 return redirect('/admin/dashboard');
             }
 
-            Auth::logout();
-            return back()->with('error', 'Akses Ditolak: Anda bukan Admin');
+            return back()->with('error', 'Akses ditolak, bukan admin');
         }
 
         return back()->with('error', 'Email atau password admin salah');
     }
 
-    public function dashboard()
-    {
-        return view('bookinghistory');
-    }
-
+    // LOGOUT
     public function logout()
     {
         Auth::logout();
-        return redirect('/login');
+        return redirect('/');
     }
 }

@@ -7,11 +7,23 @@ use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
-    public function index()
-    {
-        $bookings = Reservation::with('room')->latest()->get();
-        return view('bookinghistory', compact('bookings'));
-    }
+   public function index()
+{
+    $bookings = [
+        (object)[
+            'id' => 1,
+            'checkin' => '2026-05-10',
+            'checkout' => '2026-05-12',
+            'status' => 'Proses',
+            'payment_status' => 'Belum Bayar',
+            'room' => (object)[
+                'name' => 'Deluxe Room'
+            ]
+        ]
+    ];
+
+    return view('bookinghistory', compact('bookings'));
+}
 
     public function create($id)
     {
@@ -32,4 +44,5 @@ class BookingController extends Controller
     {
         return view('booking.success');
     }
+    
 }

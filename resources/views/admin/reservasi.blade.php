@@ -88,16 +88,6 @@
             </div>
         </div>
 
-        <!-- ACTION TAMBAHAN -->
-        <div class="card border-0 bg-light">
-            <div class="card-body d-flex justify-content-between align-items-center">
-                <span class="text-muted small">Menampilkan {{ $reservations->count() }} data terbaru</span>
-                <button class="btn btn-outline-dark btn-sm">
-                    <i class="bi bi-download me-1"></i> Export Laporan
-                </button>
-            </div>
-        </div>
-
     </div>
 </div>
 

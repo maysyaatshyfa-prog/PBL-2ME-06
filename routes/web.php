@@ -1,14 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomVariantController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ReservationController;
-use App\Http\Controllers\AdminController;
 
 
 Route::get('/', [HomeController::class, 'index']);
@@ -72,3 +71,23 @@ Route::post('/reservasi/assign/{id}', [ReservationController::class, 'assign'])
 
 Route::get('/room/{id}', [RoomController::class, 'show'])
     ->name('room.detail');
+
+
+// --- KELOLA KAMAR ---
+Route::get('/admin/kelola_kamar', [AdminController::class, 'kelolaKamar'])
+    ->middleware('auth')
+    ->name('admin.kelola_kamar');
+
+// --- PEMBAYARAN TAMU  ---
+Route::get('/payment/{id}', [BookingController::class, 'confirm'])->name('payment.page');
+Route::post('/payment/confirm/{id}', [BookingController::class, 'storePayment'])->name('payment.store');
+  // --- ROUTE UNTUK ADMIN PEMBAYARAN & PEMBATALAN ---
+Route::middleware('auth')->group(function () {
+    Route::get('/admin/pembayaran', [AdminController::class, 'pembayaran'])->name('admin.pembayaran');
+    Route::get('/admin/pembatalan', [AdminController::class, 'pembatalan'])->name('admin.pembatalan');
+    
+    // Route untuk aksi tombol ACC dan Tolak
+    Route::post('/admin/pembayaran/acc/{id}', [AdminController::class, 'accPembayaran']);
+    Route::post('/admin/pembatalan/acc/{id}', [AdminController::class, 'accPembatalan']);
+    Route::post('/admin/pembatalan/tolak/{id}', [AdminController::class, 'tolakPembatalan']);
+}); 

@@ -60,15 +60,8 @@
                                 placeholder="Contoh: late check-in, kamar lantai atas"></textarea>
                         </div>
 
-                        <div class="form-check mb-4">
-                            <input class="form-check-input" type="checkbox">
-                            <label class="form-check-label">
-                                Buat akun untuk booking lebih cepat di lain waktu
-                            </label>
-                        </div>
-
                         <div class="d-flex gap-3">
-                            <a href="/room-detail" class="btn btn-outline-secondary w-50">Kembali</a>
+                            <a href="/konfirmasi" class="btn btn-outline-secondary w-50">Kembali</a>
                             <button type="submit" class="btn btn-primary-custom w-50">
                                 Lanjut ke Konfirmasi
                             </button>

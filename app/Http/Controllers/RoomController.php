@@ -22,14 +22,13 @@ class RoomController extends Controller
     }
 
     // DETAIL KAMAR
-   public function show($id)
-   {
-       $variant = RoomVariant::with('room')->findOrFail($id);
+    public function show($id)
+{
+    $variant = RoomVariant::with('room')->findOrFail($id);
 
-       return view('room-detail', compact('variant'));
-    }
+    return view('room-detail', compact('variant'));
+}
 
-    // TYPE (opsional)
     public function type($typeKey)
     {
         return view('rooms.type', compact('typeKey'));

@@ -1,0 +1,14 @@
+.main {
+    margin-left: 240px;
+    padding: 20px;
+}
+
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.badge {
+    padding: 6px 10px;
+    border-radius: 8px;
+}
