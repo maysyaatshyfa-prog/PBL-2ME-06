@@ -2,96 +2,137 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Reservation;
 use App\Models\Room;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function dashboard()
+    /*
+    |--------------------------------------------------------------------------
+    | DASHBOARD
+    |--------------------------------------------------------------------------
+    */
+    public function dashboard(Request $request)
     {
+        $startDateInput = $request->get('start_date', Carbon::now()->startOfWeek()->format('Y-m-d'));
+        $endDateInput = $request->get('end_date', Carbon::now()->endOfWeek()->format('Y-m-d'));
+
         $totalKamar = Room::count();
         $kamarTersedia = Room::where('status', 'tersedia')->count();
 
-        $reservations = Reservation::with('user', 'room')
-            ->latest()
-            ->take(5)
-            ->get();
+        $menungguPembayaran = Reservation::where('status', 'Menunggu Pembayaran')
+            ->whereBetween('created_at', [$startDateInput, $endDateInput])->count();
 
-        return view('admin.dashboard', compact(
-            'totalKamar',
-            'kamarTersedia',
-            'reservations'
-        ));
+        $totalPendapatan = Reservation::where('status', 'Lunas')
+            ->whereBetween('created_at', [$startDateInput, $endDateInput])->sum('total_harga');
+
+        $reservations = Reservation::with(['user', 'room'])->latest()->take(5)->get();
+
+        $start = Carbon::parse($startDateInput);
+        $end = Carbon::parse($endDateInput);
+        
+        $labels = []; $reservasiChart = []; $pendapatanChart = [];
+        for ($date = $start->copy(); $date->lte($end); $date->addDay()) {
+            $labels[] = $date->locale('id')->translatedFormat('D');
+            $reservasiChart[] = Reservation::whereDate('created_at', $date)->count();
+            $pendapatanChart[] = Reservation::where('status', 'Lunas')->whereDate('created_at', $date)->sum('total_harga');
+        }
+
+        return view('admin.dashboard', compact('totalKamar', 'kamarTersedia', 'menungguPembayaran', 'totalPendapatan', 'reservations', 'labels', 'reservasiChart', 'pendapatanChart'));
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | KELOLA KAMAR
+    |--------------------------------------------------------------------------
+    */
     public function kelolaKamar()
     {
-       $rooms = Room::with('variant.type')->get();
-
+        $rooms = Room::with('variant')->latest()->paginate(10);
         return view('admin.kelola_kamar', compact('rooms'));
     }
 
-
-    // =========================
-    // HALAMAN PEMBAYARAN
-    // =========================
+    /*
+    |--------------------------------------------------------------------------
+    | PEMBAYARAN
+    |--------------------------------------------------------------------------
+    */
     public function pembayaran()
     {
-        $payments = Reservation::with('user', 'room')
+        $payments = Reservation::with(['user', 'room'])
+            ->where('status', 'Menunggu Pembayaran')
             ->latest()
-            ->get();
+            ->paginate(10);
 
         return view('admin.pembayaranadmin', compact('payments'));
     }
 
-    // =========================
-    // HALAMAN PEMBATALAN
-    // =========================
+    public function accPembayaran($id)
+    {
+        $payment = Reservation::findOrFail($id);
+        $payment->update(['status' => 'Lunas']);
+        return back()->with('success', 'Pembayaran berhasil di ACC');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | PEMBATALAN
+    |--------------------------------------------------------------------------
+    */
     public function pembatalan()
     {
-        $data = Reservation::with('user', 'room')
+        $data = Reservation::with(['user', 'room'])
+            ->where('status', 'Pengajuan Pembatalan')
             ->latest()
-            ->get();
+            ->paginate(10);
 
         return view('admin.pembatalanadmin', compact('data'));
     }
 
-    // =========================
-    // ACC PEMBAYARAN
-    // =========================
-    public function accPembayaran($id)
-    {
-        $payment = Reservation::findOrFail($id);
-        $payment->status = 'Lunas';
-        $payment->save();
-
-        return back()->with('success', 'Pembayaran berhasil di ACC');
-    }
-
-    // =========================
-    // ACC PEMBATALAN
-    // =========================
     public function accPembatalan($id)
     {
-        $item = Reservation::findOrFail($id);
-
-        $item->status = 'Dibatalkan';
-        $item->save();
-
-        return back()->with('success', 'Pembatalan disetujui');
+        $reservation = Reservation::findOrFail($id);
+        $reservation->update(['status' => 'Dibatalkan']);
+        return back()->with('success', 'Pembatalan berhasil disetujui');
     }
 
-    // =========================
-    // TOLAK PEMBATALAN
-    // =========================
     public function tolakPembatalan($id)
     {
-        $item = Reservation::findOrFail($id);
-
-        $item->status = 'Aktif';
-        $item->save();
-
+        $reservation = Reservation::findOrFail($id);
+        $reservation->update(['status' => 'Lunas']);
         return back()->with('success', 'Pengajuan pembatalan ditolak');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | RESERVASI ADMIN
+    |--------------------------------------------------------------------------
+    */
+    public function reservasiIndex(Request $request)
+    {
+        $statusFilter = $request->get('status');
+        $query = Reservation::with(['user', 'room'])->latest();
+
+        if ($statusFilter && $statusFilter !== 'Semua') {
+            $statusMap = ['Menunggu' => 'Menunggu Pembayaran', 'Selesai' => 'Lunas'];
+            $query->where('status', $statusMap[$statusFilter] ?? $statusFilter);
+        }
+
+        $reservations = $query->paginate(10);
+        return view('admin.reservasi', compact('reservations', 'statusFilter'));
+    }
+
+    public function updateReservasiStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:Lunas,Dibatalkan'
+        ]);
+
+        $reservation = Reservation::findOrFail($id);
+        $reservation->update(['status' => $request->status]);
+
+        return redirect()->back()->with('success', 'Status data reservasi berhasil diperbarui!');
     }
 }

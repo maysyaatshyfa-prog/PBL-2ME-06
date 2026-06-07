@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RoomVariant;
+use App\Models\Room; // Ditambahkan untuk memanggil model Room induk
 use App\Models\Reservation; 
 use Carbon\Carbon;
 
@@ -18,7 +19,7 @@ class ReservationController extends Controller
         $adult = $request->query('adult', 2);
         $child = $request->query('child', 0);
 
-        //  pastikan tanggal valid
+        // pastikan tanggal valid
         $dateIn = Carbon::parse($checkin);
         $dateOut = Carbon::parse($checkout);
 
@@ -41,33 +42,34 @@ class ReservationController extends Controller
 
     public function store(Request $request)
     {
+        // 1. Ambil data varian untuk menghitung harga
         $variant = RoomVariant::findOrFail($request->room_variant_id);
 
         $dateIn = Carbon::parse($request->check_in);
         $dateOut = Carbon::parse($request->check_out);
 
-       $duration = $dateIn->diffInDays($dateOut);
+        $duration = max(1, $dateIn->diffInDays($dateOut));
         $totalPrice = $variant->price * $duration;
 
+        // 2. Simpan ke database sesuai dengan kolom tabel reservations kamu
         Reservation::create([
-            'user_id' => auth()->id(),
-            'room_variant_id' => $variant->id,
-            'check_in' => $request->check_in,
-            'check_out' => $request->check_out,
-            'adult' => $request->adult,
-            'child' => $request->child,
-            'duration' => $duration,
-            'total_price' => $totalPrice,
-            'status' => 'menunggu'
+            'user_id'     => auth()->id(),
+            'room_id'     => $variant->room_id, // Mengambil room_id dari varian kamar agar cocok dengan database
+            'check_in'    => $request->check_in,
+            'check_out'   => $request->check_out,
+            'total_harga' => $totalPrice, // Disesuaikan dari total_price menjadi total_harga
+            'status'      => 'Menunggu Pembayaran' // Disesuaikan dengan default string status sistem kita
         ]);
 
-        return redirect()->route('reservasi.index')
-            ->with('success', 'Reservasi berhasil dibuat');
+        // 3. Alihkan halaman ke riwayat booking milik pelanggan
+        return redirect()->route('bookinghistory.index')
+            ->with('success', 'Reservasi berhasil dibuat! Silakan lakukan pembayaran.');
     }
 
     public function index()
     {
-        $reservations = Reservation::with(['user', 'roomVariant'])->get();
+        // ✔️ DIPERBAIKI: Mengubah roomVariant menjadi room agar tidak error RelationNotFoundException
+        $reservations = Reservation::with(['user', 'room'])->latest()->get();
 
         return view('admin.reservasi', compact('reservations'));
     }

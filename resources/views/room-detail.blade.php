@@ -6,10 +6,8 @@
 
 <main class="room-detail-page">
 
-    <!-- HERO / BREADCRUMB -->
     <section class="detail-hero">
         <div class="container">
-
             <h1 class="room-title">
                 {{ $variant->name }}
             </h1>
@@ -20,33 +18,40 @@
     </section>
 
 
-    <!-- MAIN DETAIL -->
     <section class="room-detail-section">
         <div class="container">
             <div class="detail-grid">
-                <!-- Pembuka Grid Utama -->
-
-                <!-- LEFT CONTENT -->
                 <div class="detail-left">
-                    <!-- Gallery -->
                     <div class="room-gallery">
                         <div class="main-image">
                             <img src="{{ asset('images/'.$variant->image) }}">
                         </div>
                         <div class="thumbnail-list">
-                            @foreach(json_decode($variant->gallery ?? '[]') as $img)
-                            <img src="{{ asset('images/'.$img) }}">
-                            @endforeach
+                            @php
+                                // Mengubah data JSON secara aman. Jika bernilai 0 atau null, paksa menjadi array kosong
+                                $galleryImages = json_decode($variant->gallery, true);
+                                if (!is_array($galleryImages)) {
+                                    $galleryImages = [];
+                                }
+                            @endphp
+
+                            @if(count($galleryImages) > 0)
+                                {{-- Jika format JSON valid dan ada isinya --}}
+                                @foreach($galleryImages as $img)
+                                    <img src="{{ asset('images/'.$img) }}">
+                                @endforeach
+                            @else
+                                {{-- Cadangan: Jika galeri kosong atau berisi angka 0, gunakan gambar utama sebagai thumbnail --}}
+                                <img src="{{ asset('images/'.$variant->image) }}">
+                            @endif
                         </div>
                     </div>
 
-                    <!-- Description -->
                     <div class="detail-card">
                         <h3>Deskripsi Kamar</h3>
                         <p>{{ $variant->room->description }}</p>
                     </div>
 
-                    <!-- Facilities -->
                     <div class="detail-card">
                         <h3>Fasilitas Kamar</h3>
                         <div class="facility-list">
@@ -61,7 +66,6 @@
                         </div>
                     </div>
 
-                    <!-- Policy -->
                     <div class="detail-card">
                         <h3>Kebijakan Hotel</h3>
                         <ul>
@@ -73,7 +77,6 @@
                     </div>
                 </div>
 
-                <!-- RIGHT SIDEBAR -->
                 <div class="detail-right">
                     <div class="booking-card">
                         <h3>Ringkasan Reservasi</h3>

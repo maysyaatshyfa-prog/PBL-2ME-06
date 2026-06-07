@@ -22,17 +22,8 @@
 
         {{-- FILTER + SEARCH --}}
         <form method="GET" action="{{ route('rooms.index') }}" class="d-flex gap-2 mb-4">
-
-            {{-- SEARCH --}}
-            <input 
-                type="text" 
-                name="search" 
-                class="form-control"
-                placeholder="Cari No Kamar..."
-                value="{{ request('search') }}"
-            >
-
-            {{-- TIPE --}}
+            <input type="text" name="search" class="form-control" placeholder="Cari No Kamar..." value="{{ request('search') }}">
+            
             <select name="type" class="form-control" onchange="this.form.submit()">
                 <option value="">Semua Tipe</option>
                 <option value="standard" {{ request('type') == 'standard' ? 'selected' : '' }}>Standard</option>
@@ -40,7 +31,6 @@
                 <option value="suite" {{ request('type') == 'suite' ? 'selected' : '' }}>Suite</option>
             </select>
 
-            {{-- STATUS --}}
             <select name="status" class="form-control" onchange="this.form.submit()">
                 <option value="">Semua Status</option>
                 <option value="tersedia" {{ request('status') == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
@@ -49,18 +39,15 @@
             </select>
 
             <button class="btn btn-dark">Cari</button>
-
         </form>
 
         {{-- CARD --}}
         <div class="card shadow-sm rounded-3">
             <div class="card-body">
-
                 <h5 class="mb-3 fw-semibold">Daftar Kamar</h5>
 
                 <div class="table-responsive">
                     <table class="table table-hover text-center align-middle">
-
                         <thead class="text-muted small">
                             <tr>
                                 <th>No</th>
@@ -74,31 +61,21 @@
                         </thead>
 
                         <tbody>
-
                         @forelse($rooms as $i => $room)
                             <tr>
-
                                 <td>{{ $i + 1 }}</td>
 
                                 {{-- NOMOR --}}
-                                <td class="fw-semibold">
-                                    {{ $room->number ?? '-' }}
-                                </td>
+                                <td class="fw-semibold">{{ $room->number ?? '-' }}</td>
 
-                                {{-- TIPE --}}
-                                <td>
-                                    {{ optional(optional($room->variant)->room)->title ?? '-' }}
-                                </td>
+                                {{-- TIPE (Mengambil data dari variant pertama) --}}
+                                <td>{{ $room->variant->first()->title ?? 'Tidak Ada Tipe' }}</td>
 
                                 {{-- SUB TIPE --}}
-                                <td>
-                                    {{ optional($room->variant)->name ?? '-' }}
-                                </td>
+                                <td>{{ $room->variant->first()->name ?? 'Tidak Ada Sub Tipe' }}</td>
 
                                 {{-- HARGA --}}
-                                <td>
-                                    Rp {{ number_format(optional($room->variant)->price ?? 0, 0, ',', '.') }}
-                                </td>
+                                <td>Rp {{ number_format($room->variant->first()->price ?? 0, 0, ',', '.') }}</td>
 
                                 {{-- STATUS --}}
                                 <td>
@@ -114,43 +91,24 @@
                                 {{-- AKSI --}}
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
-
-                                        <a href="#" class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-
+                                        <a href="#" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></a>
                                         <form action="#" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-outline-danger">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
+                                            @csrf @method('DELETE')
+                                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
                                         </form>
-
                                     </div>
                                 </td>
-
                             </tr>
-
                         @empty
                             <tr>
-                                <td colspan="7" class="py-5 text-muted">
-                                    <i class="bi bi-door-closed d-block mb-2" style="font-size:2rem;"></i>
-                                    Belum ada data kamar
-                                </td>
+                                <td colspan="7" class="py-5 text-muted">Belum ada data kamar</td>
                             </tr>
                         @endforelse
-
                         </tbody>
-
                     </table>
                 </div>
-
             </div>
         </div>
-
     </div>
-
 </div>
-
 @endsection

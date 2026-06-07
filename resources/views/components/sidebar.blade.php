@@ -10,7 +10,7 @@
     <!-- MENU -->
     <div class="sidebar-menu">
 
-        <a href="/dashboard">
+        <a href="/admin/dashboard">
             <i class="bi bi-house"></i> Beranda
         </a>
 
@@ -35,7 +35,7 @@
 
     <div class="sidebar-footer">
         <div class="logout">
-            <a href="/logout">
+            <a href="/admin/login">
                 <i class="bi bi-box-arrow-right"></i> Keluar
             </a>
         </div>

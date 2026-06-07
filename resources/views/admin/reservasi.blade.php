@@ -8,12 +8,10 @@
 
     @include('components.sidebar')
 
-    <!-- MAIN CONTENT -->
     <div class="main p-4">
 
         <h4 class="mb-4 fw-bold">Reservasi</h4>
 
-        <!-- FILTER -->
         <div class="mb-3">
             <div class="section-title d-inline-block">Filter Status</div>
             <select class="form-select form-select-sm d-inline-block w-auto ms-2">
@@ -23,7 +21,6 @@
             </select>
         </div>
 
-        <!-- TABLE RESERVASI -->
         <div class="card mb-4 shadow-sm" style="border-radius: 10px;">
             <div class="card-body">
                 
@@ -35,14 +32,13 @@
                                 <th>Tipe Kamar</th>
                                 <th>Nomor Kamar</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             @if($reservations->isEmpty())
                                 <tr>
-                                    <td colspan="5" class="py-5 text-muted">
+                                    <td colspan="4" class="py-5 text-muted">
                                         <i class="bi bi-inbox d-block mb-2" style="font-size: 2rem;"></i>
                                         Belum ada data reservasi
                                     </td>
@@ -58,25 +54,12 @@
                                             </span>
                                         </td>
 
-                                        <!-- STATUS -->
                                         <td>
                                             @if($res->status == 'menunggu')
                                                 <span class="badge bg-warning text-dark px-3">Menunggu</span>
                                             @else
                                                 <span class="badge bg-success px-3">Selesai</span>
                                             @endif
-                                        </td>
-
-                                        <!-- AKSI -->
-                                        <td>
-                                            <div class="d-flex justify-content-center gap-2">
-                                                <button class="btn btn-sm btn-dark">
-                                                    <i class="bi bi-door-open me-1"></i> Assign Kamar
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-secondary">
-                                                    <i class="bi bi-eye"></i>
-                                                </button>
-                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -7,13 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 class Room extends Model
 {
     protected $fillable = [
-        'room_variant_id',
-        'number',
+        'type',
+        'title',
+        'description',
         'status'
     ];
 
+    public function reservations()
+    {
+        return $this->hasMany(
+            Reservation::class,
+            'room_id'
+        );
+    }
+
     public function variant()
     {
-        return $this->belongsTo(RoomVariant::class, 'room_variant_id');
+        return $this->hasMany(
+            RoomVariant::class,
+            'room_id'
+        );
     }
 }
