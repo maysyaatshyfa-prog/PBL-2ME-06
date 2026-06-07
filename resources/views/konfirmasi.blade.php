@@ -1,91 +1,162 @@
 @extends('layouts.app')
-
-@section('title', 'Konfirmasi Pembayaran')
-
+@section('title', 'Konfirmasi Pemesanan')
 @section('content')
 
-<div class="container py-4">
+@include('components.navbar')
 
-    <h2 class="mb-4">Konfirmasi Pembayaran</h2>
+<div class="container py-5">
 
-    <div class="row">
+    {{-- Step --}}
+    <div class="d-flex align-items-center gap-3 mb-4">
+        <div class="step-number">4</div>
+        <h3 class="mb-0 fw-bold">Konfirmasi Pemesanan</h3>
+    </div>
 
-        {{-- DETAIL BOOKING --}}
-        <div class="col-md-6">
+    <div class="booking-wrapper">
+        <div class="row g-4">
 
-            <div class="card p-3 mb-3">
-                <h5>Detail Booking</h5>
-                <hr>
+            {{-- KIRI --}}
+            <div class="col-lg-8">
+                <div class="box-card">
 
-                <p><strong>Kode Booking:</strong> {{ $booking->id }}</p>
-                <p><strong>Tipe Kamar:</strong> {{ $booking->room->name ?? '-' }}</p>
-                <p><strong>Check-in:</strong> {{ $booking->checkin }}</p>
-                <p><strong>Check-out:</strong> {{ $booking->checkout }}</p>
+                    <p class="text-muted mb-4">
+                        Periksa kembali detail pemesanan Anda sebelum melanjutkan ke pembayaran.
+                    </p>
 
-                <p><strong>Total Harga:</strong> Rp {{ number_format($booking->total_price ?? 0, 0, ',', '.') }}</p>
-            </div>
+                    {{-- DATA PEMESAN --}}
+                    <h5 class="fw-bold mb-3">Data Pemesan</h5>
 
-        </div>
+                    <div class="border rounded-4 p-4 mb-4">
 
-        {{-- PEMBAYARAN --}}
-        <div class="col-md-6">
+                        <div class="row mb-3">
+                            <div class="col-md-4 text-muted">Nama Lengkap</div>
+                            <div class="col-md-4 fw-semibold">{{ request('nama') }}</div>
+                        </div>
 
-            <form action="{{ url('/payment/confirm/' . $booking->id) }}" method="POST" enctype="multipart/form-data">
-                @csrf
+                        <div class="row mb-3">
+                            <div class="col-md-4 text-muted">Email</div>
+                            <div class="col-md-4 fw-semibold">{{ request('email') }}</div>
+                        </div>
 
-                <div class="card p-3 mb-3">
-
-                    <h5>Metode Pembayaran</h5>
-                    <hr>
-
-                    {{-- PILIH METODE --}}
-                    <div class="mb-3">
-
-                        <label class="form-label">Pilih Metode</label>
-
-                        <select name="payment_method" class="form-control" required>
-                            <option value="">-- Pilih Metode --</option>
-                            <option value="transfer">Transfer Bank</option>
-                            <option value="qris">QRIS</option>
-                        </select>
+                        <div class="row">
+                            <div class="col-md-4 text-muted">No. Handphone</div>
+                            <div class="col-md-4 fw-semibold">{{ request('phone') }}</div>
+                        </div>
 
                     </div>
 
-                    {{-- TRANSFER BANK --}}
-                    <div class="mb-3">
-                        <h6>Transfer Bank</h6>
-                        <p class="mb-1">Bank BCA</p>
-                        <p class="mb-1">No Rekening: <strong>1234567890</strong></p>
-                        <p>A/N: Hotel MarStay</p>
-                    </div>
+                    {{-- DATA TAMU --}}
+                    <h5 class="fw-bold mb-3">Data Tamu</h5>
 
-                    {{-- QRIS --}}
-                    <div class="mb-3">
-                        <h6>QRIS</h6>
-                        <img src="{{ asset('images/qris.png') }}" alt="QRIS" style="width:200px;">
-                        <p class="text-muted">Scan QR untuk pembayaran</p>
-                    </div>
+                    <div class="border rounded-4 p-4 mb-4">
 
-                    {{-- UPLOAD BUKTI --}}
-                    <div class="mb-3">
+                        <div class="row mb-3">
+                            <div class="col-md-4 text-muted">Nama Tamu</div>
+                            <div class="col-md-4 fw-semibold">{{ request('guest_name') }}</div>
+                        </div>
 
-                        <label class="form-label">Upload Bukti Pembayaran</label>
-                        <input type="file" name="payment_proof" class="form-control" required>
+                        <div class="row">
+                            <div class="col-md-4 text-muted">Permintaan Khusus</div>
+                            <div class="col-md-4 fw-semibold">
+                                {{ request('special_request') ?: '-' }}
+                            </div>
+                        </div>
 
                     </div>
 
-                    <button type="submit" class="btn btn-success w-100">
-                        Kirim Konfirmasi Pembayaran
+                    {{-- MIDTRANS BUTTON --}}
+                    <h5 class="fw-bold mb-3">Pembayaran</h5>
+
+                    <button id="pay-button" class="btn btn-primary w-100 py-3">
+                        Bayar Sekarang
                     </button>
 
                 </div>
+            </div>
 
-            </form>
+            {{-- RINGKASAN --}}
+            <div class="col-lg-4">
+                <div class="box-card">
+
+                    <h5 class="fw-bold mb-3">Ringkasan Pemesanan</h5>
+
+                    <div class="room-summary d-flex gap-3 mb-4">
+
+                        <img src="{{ asset('images/'.$variant->image) }}">
+
+                        <div>
+                            <h6 class="fw-bold">{{ $variant->name }}</h6>
+
+                            <span class="text-primary fw-semibold">
+                                Rp {{ number_format($variant->price,0,',','.') }} / malam
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="summary-list">
+
+                        <div>
+                            <span>Check-in</span>
+                            <strong>{{ $checkin }}</strong>
+                        </div>
+
+                        <div>
+                            <span>Check-out</span>
+                            <strong>{{ $checkout }}</strong>
+                        </div>
+
+                        <div>
+                            <span>Tamu</span>
+                            <strong>{{ $adult }} Dewasa, {{ $child }} Anak</strong>
+                        </div>
+
+                        <div>
+                            <span>Durasi</span>
+                            <strong>{{ $duration }} Malam</strong>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between">
+                        <span>Total Harga</span>
+                        <strong class="text-primary fs-4">
+                            Rp {{ number_format($totalPrice,0,',','.') }}
+                        </strong>
+                    </div>
+
+                </div>
+            </div>
 
         </div>
-
     </div>
 
 </div>
+
+{{-- MIDTRANS SNAP --}}
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}">
+</script>
+
+<script>
+    document.getElementById('pay-button').onclick = function () {
+        snap.pay('{{ $snapToken }}', {
+            onSuccess: function (result) {
+                window.location.href = "/payment/success";
+            },
+            onPending: function (result) {
+                window.location.href = "/payment/pending";
+            },
+            onError: function (result) {
+                alert("Pembayaran gagal!");
+                console.log(result);
+            },
+            onClose: function () {
+                alert("Kamu menutup popup pembayaran");
+            }
+        });
+    };
+</script>
 
 @endsection

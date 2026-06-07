@@ -34,12 +34,13 @@
 
                         <div class="mb-3">
                             <label class="form-label">Nama Lengkap *</label>
-                            <input type="text" name="nama" class="form-control" placeholder="Masukkan nama lengkap">
+                            <input type="text" name="nama" class="form-control" value="{{ auth()->user()->name ?? '' }}"
+                                readonly>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label">Email *</label>
-                            <input type="email" name="email" class="form-control" placeholder="nama@email.com">
+                            <input type="email" name="email" class="form-control"
+                                value="{{ auth()->user()->email ?? '' }}" readonly>
                         </div>
 
                         <div class="mb-3">
@@ -56,15 +57,22 @@
 
                         <div class="mb-3">
                             <label class="form-label">Permintaan Khusus</label>
-                            <textarea class="form-control" rows="4"
-                                placeholder="Contoh: late check-in, kamar lantai atas"></textarea>
+                            <textarea name="special_request" class="form-control" rows="4"
+                                placeholder="Contoh: late check-in, kamar lantai atas">
+                            </textarea>
                         </div>
 
                         <div class="d-flex gap-3">
-                            <a href="/konfirmasi" class="btn btn-outline-secondary w-50">Kembali</a>
-                            <button type="submit" class="btn btn-primary-custom w-50">
+
+                            <a href="{{ url()->previous() }}"
+                                class="btn btn-outline-secondary w-50 d-flex justify-content-center align-items-center">
+                                Kembali
+                            </a>
+
+                            <button type="submit" class="btn btn-primary w-50">
                                 Lanjut ke Konfirmasi
                             </button>
+
                         </div>
 
                     </form>
