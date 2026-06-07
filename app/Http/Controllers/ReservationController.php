@@ -4,14 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RoomVariant;
-<<<<<<< HEAD
 use App\Models\Room; // Ditambahkan untuk memanggil model Room induk
 use App\Models\Reservation; 
-=======
-use App\Models\Reservation;
-use Midtrans\Snap;
-use Midtrans\Config;
->>>>>>> 09e1eec032c5730b60808b865c8bb66b85864c86
 use Carbon\Carbon;
 
 class ReservationController extends Controller
@@ -25,14 +19,14 @@ class ReservationController extends Controller
         $adult = $request->query('adult', 2);
         $child = $request->query('child', 0);
 
-<<<<<<< HEAD
         // pastikan tanggal valid
-=======
->>>>>>> 09e1eec032c5730b60808b865c8bb66b85864c86
         $dateIn = Carbon::parse($checkin);
         $dateOut = Carbon::parse($checkout);
 
+        // minimal 1 malam
         $duration = max(1, $dateIn->diffInDays($dateOut));
+
+        // hitung total
         $totalPrice = $variant->price * $duration;
 
         return view('form-reservasi', compact(
@@ -45,65 +39,6 @@ class ReservationController extends Controller
             'totalPrice'
         ));
     }
-
-    public function konfirmasi(Request $request)
-{
-    // MIDTRANS CONFIG (WAJIB dari ENV)
-    Config::$serverKey = config('midtrans.serverKey');
-    Config::$isProduction = config('midtrans.isProduction');
-    Config::$isSanitized = true;
-    Config::$is3ds = true;
-
-    $variant = RoomVariant::findOrFail($request->query('variant_id'));
-
-    $checkin = $request->query('checkin');
-    $checkout = $request->query('checkout');
-    $adult = $request->query('adult', 2);
-    $child = $request->query('child', 0);
-
-    $nama = $request->nama;
-    $email = $request->email;
-    $phone = $request->phone;
-    $guest_name = $request->guest_name;
-    $special_request = $request->special_request;
-
-    $dateIn = Carbon::parse($checkin);
-    $dateOut = Carbon::parse($checkout);
-
-    $duration = max(1, $dateIn->diffInDays($dateOut));
-    $totalPrice = $variant->price * $duration;
-
-    // 🔥 VALIDASI PENTING
-    if ($totalPrice <= 0) {
-        return "Total harga tidak valid";
-    }
-
-    try {
-        $snapToken = Snap::getSnapToken([
-            'transaction_details' => [
-                'order_id' => 'BOOK-' . time(),
-                'gross_amount' => $totalPrice,
-            ],
-            'customer_details' => [
-                'first_name' => auth()->user()->name ?? 'Guest',
-                'email' => auth()->user()->email ?? 'guest@mail.com',
-            ]
-        ]);
-    } catch (\Exception $e) {
-        return "Midtrans Error: " . $e->getMessage();
-    }
-
-    return view('konfirmasi', compact(
-        'variant',
-        'checkin',
-        'checkout',
-        'adult',
-        'child',
-        'duration',
-        'totalPrice',
-        'snapToken'
-    ));
-}
 
     public function store(Request $request)
     {
@@ -133,13 +68,9 @@ class ReservationController extends Controller
 
     public function index()
     {
-<<<<<<< HEAD
         // ✔️ DIPERBAIKI: Mengubah roomVariant menjadi room agar tidak error RelationNotFoundException
         $reservations = Reservation::with(['user', 'room'])->latest()->get();
 
-=======
-        $reservations = Reservation::with(['user', 'roomVariant'])->get();
->>>>>>> 09e1eec032c5730b60808b865c8bb66b85864c86
         return view('admin.reservasi', compact('reservations'));
     }
 }
