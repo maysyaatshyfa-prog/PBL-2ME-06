@@ -126,19 +126,96 @@ body {
     width: auto;
 }
 
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
 /* MENU */
 .navbar-right a {
     margin-left: 25px;
     text-decoration: none;
     color: #2c2c2c;
     font-weight: 500;
+
+    position: relative;
+
+}
+
+/* PROFILE */
+.profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    background: #f3f3f3;
+    border: none;
+    border-radius: 999px;
+    padding: 8px 14px;
+
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+    overflow: hidden;
+
+    background: #1b2b49;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-name {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1;
+}
+
+.profile-btn i {
+    font-size: 12px;
+    color: #666;
+}
+
+.dropdown-header {
+    background: #c5a15a;
+    color: white;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-header small {
+    opacity: .9;
 }
 
 /* BUTTON MASUK */
 .btn-masuk {
     background: #dcdcdc;
-    padding: 8px 15px;
+    padding: 6px 12px;
     border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    border: none;
+    cursor: pointer;
 }
 
 /* HOVER */
@@ -147,20 +224,22 @@ body {
 }
 
 .layout {
-     display: flex;
+    display: flex;
     min-height: 100vh;
 }
 
 .user-dropdown {
     position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
 }
 
 .dropdown-menu {
     display: none;
     position: absolute;
     right: 0;
-    top: 45px;
+    top: 60px;
     background: #fff;
     min-width: 180px;
     border-radius: 12px;
@@ -170,13 +249,18 @@ body {
 
 .dropdown-menu a {
     display: block;
-    padding: 12px;
+    width: 100%;
+    padding: 15px 20px;
+    margin: 0 !important;
+    box-sizing: border-box;
+
     text-decoration: none;
-    color: #1f2a44;
+    color: #1f2a44 !important;
 }
 
 .dropdown-menu a:hover {
     background: #f5f5f5;
+    color: #1f2a44 !important;
 }
 
 .user-dropdown:hover .dropdown-menu {
@@ -1244,83 +1328,338 @@ textarea.form-control {
     font-size: 14px;
 }
 
-.payment-card{
-    display:block;
-    border:1px solid #ddd;
-    border-radius:16px;
-    padding:20px;
-    cursor:pointer;
-    height:100%;
+.payment-card {
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    padding: 20px;
+    cursor: pointer;
+    height: 100%;
 }
 
-.payment-card:hover{
-    border-color:#d4a64a;
+.payment-card:hover {
+    border-color: #d4a64a;
 }
 
-.payment-card input{
-    margin-bottom:10px;
+.payment-card input {
+    margin-bottom: 10px;
 }
 
-.success-wrapper{
+.success-wrapper {
     max-width: 800px;
     margin: auto;
 }
 
-.success-card{
+.success-card {
     background: #fff;
     border-radius: 24px;
     padding: 60px;
-    box-shadow: 0 10px 30px rgba(0,0,0,.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .05);
 }
 
-.success-icon{
-    width: 90px;
-    height: 90px;
-    background: #3b82f6;
-    color: #fff;
-    border-radius: 50%;
+.success-icon {
+    width: 120px;
+    height: 120px;
     margin: 0 auto 25px;
+
+    background: #22c55e;
+    /* hijau */
+    color: white;
+    border-radius: 50%;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 40px;
+
+    font-size: 60px;
+
+    animation: successSpin 1s ease-out;
+    box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
 }
 
-.success-title{
+.success-icon i {
+    animation: checkAppear 0.8s ease-out;
+}
+
+.badge-paid {
+    display: inline-block;
+    padding: 8px 24px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+    border-radius: 999px;
+    font-weight: 700;
+
+    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.35);
+
+    animation: pulseGreen 2s infinite;
+}
+
+
+
+.success-title {
     font-size: 32px;
     font-weight: 700;
     color: #1e2f5d;
     margin-bottom: 12px;
 }
 
-.success-text{
+.success-text {
     color: #6b7280;
     font-size: 15px;
     margin-bottom: 35px;
 }
 
-.booking-info{
+.booking-info {
     border: 1px solid #e5e7eb;
     border-radius: 18px;
     padding: 25px;
 }
 
-.info-item{
+.info-item {
     display: flex;
     justify-content: space-between;
     margin-bottom: 15px;
 }
 
-.info-item:last-child{
+.info-item:last-child {
     margin-bottom: 0;
 }
 
-.info-item span{
+.info-item span {
     color: #6b7280;
 }
 
-.info-item strong{
+.info-item strong {
     color: #1e2f5d;
+}
+
+.action-btn {
+    width: 240px;
+    height: 56px;
+
+    border-radius: 16px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 500;
+}
+
+/*halaman profile saya*/
+.profile-page {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.page-header {
+    margin-bottom: 25px;
+}
+
+.page-header h1 {
+    color: #1b2b49;
+    margin-bottom: 10px;
+}
+
+
+/* BANNER */
+
+.profile-banner {
+    background: #c5a15a;
+    border-radius: 20px;
+
+    padding: 30px 40px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    color: white;
+
+    margin-bottom: 25px;
+}
+
+.profile-left {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.profile-avatar {
+    width: 110px;
+    height: 110px;
+
+    border-radius: 50%;
+
+    background: #1b2b49;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 42px;
+    font-weight: 600;
+
+    border: 5px solid white;
+
+    position: relative;
+}
+
+.profile-info h2 {
+    margin: 0;
+    font-size: 40px;
+}
+
+.profile-info p {
+    margin-top: 12px;
+    font-size: 18px;
+}
+
+.member-badge {
+    display: inline-block;
+
+    margin-top: 10px;
+
+    border: 1px solid rgba(255, 255, 255, .5);
+
+    padding: 8px 16px;
+    border-radius: 50px;
+}
+
+.btn-edit {
+    background: #1b2b49;
+    color: white;
+
+    text-decoration: none;
+
+    padding: 14px 25px;
+    border-radius: 10px;
+}
+
+/* CARD */
+
+.profile-card {
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 30px;
+
+    margin-bottom: 20px;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
+}
+
+.profile-card h3 {
+    color: #1b2b49;
+    margin-bottom: 25px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 18px 0;
+
+    border-bottom: 1px solid #eee;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-row span {
+    color: #666;
+}
+
+.info-row strong {
+    color: #1b2b49;
+}
+
+.security-action {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.btn-password {
+    text-decoration: none;
+
+    border: 1px solid #1b2b49;
+
+    color: #1b2b49;
+
+    padding: 12px 20px;
+    border-radius: 10px;
+}
+
+/* AVATAR CLICK */
+
+.clickable-avatar {
+    cursor: pointer;
+    position: relative;
+}
+
+.clickable-avatar:hover {
+    opacity: .9;
+}
+
+.clickable-avatar::after {
+    content: "📷";
+
+    position: absolute;
+    right: -5px;
+    bottom: -5px;
+
+    width: 35px;
+    height: 35px;
+
+    border-radius: 50%;
+    background: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 16px;
+
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .15);
+}
+
+/* FOTO PROFIL */
+
+.profile-avatar-img {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* MOBILE */
+
+@media(max-width:768px) {
+
+    .profile-banner {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .profile-left {
+        flex-direction: column;
+    }
+
+    .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
 }
 
 /* Responsive */
@@ -1404,5 +1743,51 @@ textarea.form-control {
 
     .testimonial-card {
         width: 300px;
+    }
+}
+
+@keyframes successSpin {
+    0% {
+        transform: scale(0) rotate(-360deg);
+        opacity: 0;
+    }
+
+    70% {
+        transform: scale(1.1) rotate(20deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes checkAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    60% {
+        transform: scale(1.3);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulseGreen {
+    0% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+    }
+
+    70% {
+        box-shadow: 0 0 0 12px rgba(34, 197, 94, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
     }
 }

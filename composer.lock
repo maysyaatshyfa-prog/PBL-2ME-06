@@ -4,11 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "7fa7882186bf5b16954e1f16412ad792",
-=======
     "content-hash": "ad03d336af355b6e2a507159e565b13d",
->>>>>>> 09e1eec032c5730b60808b865c8bb66b85864c86
+
     "packages": [
         {
             "name": "brick/math",
@@ -1305,7 +1302,7 @@
                 "symfony/console": "^6.2|^7.0|^8.0"
             },
             "conflict": {
-                "illuminate/console": ">=10.17.0 <10.25.0",
+                "illuminate/console": "=10.17.0 <10.25.0",
                 "laravel/framework": ">=10.17.0 <10.25.0"
             },
             "require-dev": {

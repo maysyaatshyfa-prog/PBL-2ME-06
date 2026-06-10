@@ -1,5 +1,3 @@
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
 <div class="navbar-custom">
 
     <!-- LOGO -->
@@ -14,24 +12,56 @@
 
         @if(Auth::check())
 
-            <a href="/bookinghistory">Reservasi Saya</a>
+        <a href="/bookinghistory">Reservasi Saya</a>
 
-            <div class="user-dropdown">
+        <div class="user-dropdown">
 
-                <button class="btn-masuk">
-                    {{ Auth::user()->name }} 
-                </button>
+            <button class="btn-masuk">
 
-                <div class="dropdown-menu">
-                    <a href="/profile">Profil Saya</a>
-                    <a href="/logout">Keluar</a>
+                <div class="user-avatar">
+
+                    @if(Auth::user()->avatar)
+
+                    <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar">
+
+                    @else
+
+                    {{ strtoupper(substr(Auth::user()->name,0,1)) }}
+
+                    @endif
+
                 </div>
+
+                <span class="user-name">
+                    {{ Auth::user()->name }}
+                </span>
+
+            </button>
+
+            <div class="dropdown-menu">
+
+                <div class="dropdown-header">
+                    <strong>{{ Auth::user()->name }}</strong>
+                    <small>{{ Auth::user()->email }}</small>
+                </div>
+
+                <a href="/profile">
+                    <i class="fa-regular fa-user"></i>
+                    Profil Saya
+                </a>
+
+                <a href="/logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Keluar
+                </a>
 
             </div>
 
+        </div>
+
         @else
 
-            <a href="/login" class="btn-masuk">Masuk</a>
+        <a href="/login" class="btn-masuk">Masuk</a>
 
         @endif
 

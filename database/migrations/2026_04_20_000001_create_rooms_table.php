@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('rooms', function (Blueprint $table) {
@@ -16,14 +13,11 @@ return new class extends Migration
             $table->string('type');
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('status')->default('tersedia');
+            $table->string('status')->default('tersedia'); // penting
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('rooms');

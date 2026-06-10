@@ -20,8 +20,7 @@ class PaymentController extends Controller
     public function pay($id)
     {
         $reservation = Reservation::findOrFail($id);
-
-        // 🔥 DEBUG PENTING (hapus kalau sudah aman)
+        
         if ($reservation->total_price <= 0) {
             dd('TOTAL PRICE INVALID', $reservation->total_price);
         }

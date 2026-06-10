@@ -2,27 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller; 
-use App\Models\RoomVariant;
 use Illuminate\Http\Request;
+use App\Models\RoomVariant;
 
 class RoomVariantController extends Controller
 {
-  public function index(Request $request)
-{
-    $query = RoomVariant::query();
+    public function index(Request $request)
+    {
+        $query = RoomVariant::query();
 
-    if ($request->adult || $request->child) {
-        $total = ($request->adult ?? 0) + ($request->child ?? 0);
-        $query->where('capacity', '>=', $total);
+        if ($request->adult || $request->child) {
+            $total = ($request->adult ?? 0) + ($request->child ?? 0);
+            $query->where('capacity', '>=', $total);
+        }
+
+        if ($request->price) {
+            $query->where('price', '<=', $request->price);
+        }
+
+        $rooms = $query->get();
+
+        return view('rooms.index', compact('rooms'));
     }
 
-    if ($request->price) {
-        $query->where('price', '<=', $request->price);
+    public function show($id)
+    {
+        $variant = RoomVariant::with('room')->findOrFail($id);
+
+        return view('rooms.detail', compact('variant'));
     }
-
-    $rooms = $query->get();
-
-    return view('rooms.index', compact('rooms'));
-}
 }

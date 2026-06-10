@@ -35,7 +35,7 @@
 
             <div class="detail-item">
                 <span>Kode Booking</span>
-                <strong>BOOK-{{ date('YmdHis') }}</strong>
+                <strong>RSV-{{ date('YmdHis') }}</strong>
             </div>
 
             <div class="detail-item">
@@ -62,15 +62,13 @@
                 <strong>Riwayat Booking</strong>.
             </div>
 
-            <div class="text-center mt-4">
+            <div class="d-flex justify-content-center gap-2 mt-4">
 
-                <a href="{{ route('bookinghistory.index') }}"
-                    class="btn btn-primary px-4">
+                <a href="{{ route('bookinghistory.index') }}" class="btn btn-primary action-btn">
                     Lihat Reservasi Saya
                 </a>
 
-                <a href="{{ url('/') }}"
-                    class="btn btn-outline-secondary px-4">
+                <a href="{{ url('/') }}" class="btn btn-outline-secondary action-btn">
                     Kembali ke Beranda
                 </a>
 

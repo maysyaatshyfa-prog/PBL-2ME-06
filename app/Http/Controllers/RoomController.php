@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Room;
-use App\Models\RoomVariant;
 
 class RoomController extends Controller
 {
@@ -21,12 +20,12 @@ class RoomController extends Controller
         return view('rooms.index', compact('rooms', 'checkin', 'checkout', 'adult', 'child'));
     }
 
-    // DETAIL KAMAR
+    // DETAIL KAMAR (INI YANG BENAR)
     public function show($id)
 {
-    $variant = RoomVariant::with('room')->findOrFail($id);
+    $room = Room::with('variants')->findOrFail($id);
 
-    return view('room-detail', compact('variant'));
+    return view('rooms.detail', compact('room'));
 }
 
     public function type($typeKey)

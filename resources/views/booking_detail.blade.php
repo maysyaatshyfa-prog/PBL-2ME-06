@@ -1,78 +1,140 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Reservasi')
-
 @section('content')
 @include('components.navbar')
 
-<style>
-    .nota-card { border-radius: 20px; transition: 0.3s; }
-    .header-gradient { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border-radius: 20px 20px 0 0; }
-    .info-box { background: #f8f9fa; border-left: 4px solid #1e3c72; }
-    .badge-modern { padding: 8px 20px; border-radius: 50px; font-weight: 600; font-size: 0.85rem; }
-</style>
-
 <div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-7 col-md-10">
-            
-            <a href="{{ route('bookinghistory.index') }}" class="text-decoration-none text-muted mb-4 d-inline-block">
-                <i class="fas fa-arrow-left"></i> ← Kembali ke Daftar Reservasi
-            </a>
 
-            <div class="nota-card shadow-lg bg-white overflow-hidden border-0">
-                {{-- Header --}}
-                <div class="header-gradient p-4 text-white text-center">
-                    <h3 class="fw-bold mb-1">Reservation Confirmation</h3>
-                    <p class="opacity-75 mb-0 text-uppercase tracking-wide">ID Booking: #{{ $booking->id }}</p>
-                </div>
+    ```
+    <div class="success-wrapper">
 
-                {{-- Body --}}
-                <div class="p-4 p-md-5">
-                    
-                    {{-- Status Bar --}}
-                    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
-                        <span class="text-muted">Status Pembayaran</span>
-                        <span class="badge-modern {{ ($booking->payment_status ?? 'Belum Bayar') == 'Lunas' ? 'bg-success text-white' : 'bg-warning text-dark' }}">
-                            {{ $booking->payment_status ?? 'Belum Bayar' }}
-                        </span>
-                    </div>
+        {{-- HEADER --}}
+        <div class="success-card text-center mb-4">
 
-                    {{-- Room Info --}}
-                    <div class="info-box p-3 mb-4">
-                        <small class="text-uppercase text-primary fw-bold d-block mb-1">Tipe Kamar</small>
-                        <h4 class="fw-bold text-dark mb-0">{{ $booking->room->title ?? 'Standard Room' }}</h4>
-                    </div>
-
-                    {{-- Check-In & Out Grid --}}
-                    <div class="row text-center mb-4">
-                        <div class="col-6">
-                            <div class="text-muted small">CHECK-IN</div>
-                            <div class="fs-5 fw-bold text-dark">{{ \Carbon\Carbon::parse($booking->checkin)->format('d M, Y') }}</div>
-                        </div>
-                        <div class="col-6">
-                            <div class="text-muted small">CHECK-OUT</div>
-                            <div class="fs-5 fw-bold text-dark">{{ \Carbon\Carbon::parse($booking->checkout)->format('d M, Y') }}</div>
-                        </div>
-                    </div>
-
-                    {{-- Footer Info --}}
-                    <div class="bg-dark text-white p-4 rounded-3 text-center">
-                        <p class="mb-0 small opacity-75">Terima kasih telah memilih MARStay</p>
-                        <h6 class="mt-2 fw-bold">Selamat Beristirahat!</h6>
-                    </div>
-
-                </div>
+            <div class="detail-icon">
+                <i class="bi bi-calendar-check"></i>
             </div>
 
-            {{-- Tombol Tindakan --}}
-            <div class="text-center mt-4">
-                <button onclick="window.print()" class="btn btn-outline-primary rounded-pill px-4">
-                    <i class="fas fa-print"></i> Cetak Nota
-                </button>
+            <h2 class="success-title">
+                Detail Reservasi
+            </h2>
+
+            <p class="success-text">
+                Informasi lengkap reservasi kamar Anda.
+            </p>
+
+            <span class="badge-reservation">
+                {{ $booking->status }}
+            </span>
+
+        </div>
+
+        {{-- DETAIL --}}
+        <div class="box-card">
+            @if(
+            $booking->room &&
+            $booking->room->firstVariant &&
+            $booking->room->firstVariant->image
+            )
+
+            <div class="text-center mb-4">
+                <img src="{{ asset('images/' . $booking->room->firstVariant->image) }}" alt="Room Image"
+                    class="img-fluid rounded-4 shadow" style="width:100%;height:350px;object-fit:cover;">
+            </div>
+
+            @else
+
+            <div class="text-center mb-4">
+                <img src="{{ asset('images/standar1.png') }}" alt="No Image" class="img-fluid rounded-4 shadow"
+                    style="width:100%;height:350px;object-fit:cover;">
+            </div>
+
+            @endif
+
+            <h5 class="fw-bold mb-4">
+                Informasi Reservasi
+            </h5>
+
+            <div class="detail-item">
+                <span>Kode Booking</span>
+                <strong>
+                    RSV-{{ str_pad($booking->id, 6, '0', STR_PAD_LEFT) }}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Nama Pemesan</span>
+                <strong>
+                    {{ $booking->user->name ?? '-' }}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Tipe Kamar</span>
+                <strong>
+                    {{ $booking->room->title ?? $booking->room->name ?? '-' }}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Check In</span>
+                <strong>
+                    {{ \Carbon\Carbon::parse($booking->check_in)->translatedFormat('d F Y') }}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Check Out</span>
+                <strong>
+                    {{ \Carbon\Carbon::parse($booking->check_out)->translatedFormat('d F Y') }}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Total Pembayaran</span>
+                <strong class="text-success">
+                    Rp {{ number_format($booking->total_harga, 0, ',', '.') }}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Status Pembayaran</span>
+                <strong class="text-success">
+                    Lunas
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Tanggal Reservasi</span>
+                <strong>
+                    {{ $booking->created_at->format('d M Y H:i') }}
+                </strong>
+            </div>
+
+            <hr>
+
+            <div class="alert alert-light border mt-3">
+                <strong>Informasi:</strong><br>
+                Silakan tunjukkan kode booking saat check-in.
+                Jika ada perubahan reservasi, silakan hubungi admin hotel.
+            </div>
+
+            <div class="d-flex justify-content-center gap-2 mt-4">
+
+                <a href="{{ route('bookinghistory.index') }}" class="btn btn-primary action-btn">
+                    Kembali ke Riwayat
+                </a>
+
+                <a href="{{ url('/') }}" class="btn btn-outline-secondary action-btn">
+                    Kembali ke Beranda
+                </a>
+
             </div>
 
         </div>
+
     </div>
+
+
 </div>
 @endsection

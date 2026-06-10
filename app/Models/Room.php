@@ -21,11 +21,12 @@ class Room extends Model
         );
     }
 
-    public function variant()
-    {
-        return $this->hasMany(
-            RoomVariant::class,
-            'room_id'
-        );
-    }
+    public function variants()
+{
+    return $this->hasMany(RoomVariant::class);
+}
+public function firstVariant()
+{
+    return $this->hasOne(RoomVariant::class);
+}
 }
