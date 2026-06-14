@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
-use App\Models\Room;
+use App\Models\RoomVariant;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -49,10 +49,18 @@ class AdminController extends Controller
     |--------------------------------------------------------------------------
     */
     public function kelolaKamar()
-    {
-        $rooms = Room::with('variant')->latest()->paginate(10);
-        return view('admin.kelola_kamar', compact('rooms'));
-    }
+{
+    $rooms = RoomVariant::with([
+            'room',
+            'roomNumbers'
+        ])
+        ->withCount('roomNumbers')
+        ->latest()
+        ->paginate(10);
+
+    return view('admin.kelola_kamar', compact('rooms'));
+}
+
 
     /*
     |--------------------------------------------------------------------------
@@ -135,4 +143,15 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Status data reservasi berhasil diperbarui!');
     }
+
+   public function daftarKamar($id)
+{
+    $variant = RoomVariant::with('roomNumbers')
+                ->findOrFail($id);
+
+    return view(
+        'admin.daftar_kamar',
+        compact('variant')
+    );
+}
 }

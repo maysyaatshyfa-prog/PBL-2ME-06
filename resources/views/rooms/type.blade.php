@@ -3,6 +3,8 @@
 @section('title', 'Detail Tipe Kamar')
 
 @section('content')
+{{-- Navbar --}}
+@include('components.navbar')
 
 @php
 $roomTypes = [

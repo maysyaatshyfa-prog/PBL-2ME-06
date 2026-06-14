@@ -239,12 +239,13 @@ body {
     display: none;
     position: absolute;
     right: 0;
-    top: 60px;
+    top: 100%;
     background: #fff;
     min-width: 180px;
     border-radius: 12px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .08);
+    box-shadow: 0 10px 20px rgba(0,0,0,.08);
     overflow: hidden;
+    z-index: 1000;
 }
 
 .dropdown-menu a {

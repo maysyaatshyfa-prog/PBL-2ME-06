@@ -4,6 +4,22 @@
     background: #f1f2f6;
 }
 
+.stat-number {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 2.8rem;
+    font-weight: 600;
+    line-height: 2;
+    letter-spacing: -2px;
+}
+
+.stat-card-title {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    /* Memberi jarak renggang elegan pada teks judul di bawah */
+}
+
 /* TITLE */
 .title {
     text-align: center;
@@ -99,6 +115,19 @@
 .btn-detail:hover {
     background: #138496;
     transform: translateY(-1px);
+}
+
+.btn-action {
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-action i {
+    font-size: 16px;
 }
 
 
@@ -233,4 +262,73 @@ h4 {
     font-size: 13px;
 }
 
+/* ROOM STATUS GRID */
+.room-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0,0,0,.25);
+    backdrop-filter: blur(5px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+.room-modal{
+    width: 900px;
+    max-width: 90%;
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 30px;
+
+    box-shadow: 0 10px 40px rgba(0,0,0,.15);
+}
+
+.room-grid{
+    display: grid;
+
+    grid-template-columns: repeat(5, 100px);
+
+    gap: 15px;
+
+    margin-top: 20px;
+}
+
+.room-box{
+    width: 100px;
+    height: 100px;
+
+    border-radius: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    color: white;
+}
+
+.available{
+    background: #198754;
+}
+
+.occupied{
+    background: #adb5bd;
+}
+
+.maintenance{
+    background: #212529;
+}
 

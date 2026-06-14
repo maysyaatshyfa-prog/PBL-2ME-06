@@ -26,6 +26,11 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /* ROOM LIST (VARIANT FILTER) */
 Route::get('/rooms', [RoomVariantController::class, 'index'])->name('rooms.index');
+Route::get('/rooms/{type}', function ($type) {
+    return view('rooms.type', [
+        'typeKey' => $type
+    ]);
+});
 
 /* ROOM DETAIL */
 Route::get('/room/{id}', [RoomVariantController::class, 'show'])->name('room.detail');
@@ -54,6 +59,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/payment/success', [BookingController::class, 'success'])
     ->name('payment.success');
 Route::get('/payment/{id}', [PaymentController::class, 'pay'])->name('payment.pay');
+Route::get('/payment/pending', [BookingController::class, 'payment'])->name('payment.pending');
 
 
 /* RESERVATION */
@@ -63,8 +69,38 @@ Route::post('/reservasi/assign/{id}', [ReservationController::class, 'assign'])-
 
 /* ADMIN */
 Route::prefix('admin')->middleware('auth')->group(function () {
+
     Route::get('/dashboard', [AdminController::class, 'dashboard']);
+
     Route::get('/kelola_kamar', [AdminController::class, 'kelolaKamar']);
-    Route::get('/pembayaran', [AdminController::class, 'pembayaran']);
-    Route::get('/pembatalan', [AdminController::class, 'pembatalan']);
+    Route::get('/kamar/{id}', [AdminController::class, 'daftarKamar'])
+        ->name('admin.kamar.detail');
+        
+    // Reservasi Admin
+    Route::get('/reservasi', [AdminController::class, 'reservasiIndex'])
+        ->name('admin.reservasi.index');
+
+    Route::patch('/reservasi/{id}/update-status',
+        [AdminController::class, 'updateReservasiStatus'])
+        ->name('admin.reservasi.updateStatus');
+
+    // Pembayaran
+    Route::get('/pembayaran', [AdminController::class, 'pembayaran'])
+        ->name('admin.pembayaran');
+
+    Route::post('/pembayaran/acc/{id}',
+        [AdminController::class, 'accPembayaran'])
+        ->name('admin.pembayaran.acc');
+
+    // Pembatalan
+    Route::get('/pembatalan', [AdminController::class, 'pembatalan'])
+        ->name('admin.pembatalan');
+
+    Route::post('/pembatalan/acc/{id}',
+        [AdminController::class, 'accPembatalan'])
+        ->name('admin.pembatalan.acc');
+
+    Route::post('/pembatalan/tolak/{id}',
+        [AdminController::class, 'tolakPembatalan'])
+        ->name('admin.pembatalan.tolak');
 });

@@ -34,13 +34,15 @@
 
                         <div class="mb-3">
                             <label class="form-label">Nama Lengkap *</label>
-                            <input type="text" name="nama" class="form-control" value="{{ auth()->user()->name ?? '' }}"
-                                readonly>
+                            <input type="text" name="nama" class="form-control"
+                                value="{{ auth()->check() ? auth()->user()->name : '' }}"
+                                {{ auth()->check() ? 'readonly' : '' }}>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Email *</label>
                             <input type="email" name="email" class="form-control"
-                                value="{{ auth()->user()->email ?? '' }}" readonly>
+                                value="{{ auth()->check() ? auth()->user()->email : '' }}"
+                                {{ auth()->check() ? 'readonly' : '' }}>
                         </div>
 
                         <div class="mb-3">

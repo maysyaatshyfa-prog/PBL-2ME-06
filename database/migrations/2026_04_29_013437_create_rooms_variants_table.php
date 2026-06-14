@@ -13,9 +13,9 @@ return new class extends Migration
 
             $table->foreignId('room_id')->constrained()->onDelete('cascade');
 
-            $table->string('name');       // Standard Twin
-            $table->integer('price');     // harga
-            $table->integer('capacity');  // jumlah orang
+            $table->string('name');       
+            $table->integer('price');     
+            $table->integer('capacity');  
             $table->string('size')->nullable(); 
             $table->string('image')->nullable();
 

@@ -8,23 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-<style>
-    /* Custom Style khusus untuk Angka Statistik agar Sangat Mewah & Rapi */
-    .stat-number {
-        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-        font-size: 2.8rem; /* Ukuran pas, besar dan tegas */
-        font-weight: 600;  /* Bold tebal modern */
-        line-height: 2;
-        letter-spacing: -2px; /* Merapatkan angka agar terlihat estetik seperti UI premium */
-    }
-    
-    .stat-card-title {
-        font-family: 'Plus Jakarta Sans', sans-serif !important;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 2px; /* Memberi jarak renggang elegan pada teks judul di bawah */
-    }
-</style>
 
 <div class="layout">
 
@@ -198,7 +181,7 @@
                 <div class="section-title mb-2">
                     Tindakan Cepat
                 </div>
-                <a href="{{ route('admin.kelola_kamar') }}" class="btn btn-dark">
+                <a href="#" class="btn btn-dark">
                     + Tambah Kamar
                 </a>
             </div>

@@ -3,16 +3,27 @@
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Room;
 
-class RoomVariant extends Model {
-    protected $fillable=[ 'room_id',
-    'name',
-    'price',
-    'capacity',
-    'size',
-    'image'
+class RoomVariant extends Model
+{
+    protected $fillable = [
+        'room_id',
+        'name',
+        'price',
+        'capacity',
+        'size',
+        'image'
     ];
 
-    public function room() {
+    public function room()
+    {
         return $this->belongsTo(Room::class);
     }
+
+    public function roomNumbers()
+{
+    return $this->hasMany(
+        RoomNumber::class,
+        'room_variant_id'
+    );
+}
 }
