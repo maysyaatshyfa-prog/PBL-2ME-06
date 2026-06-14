@@ -9,14 +9,15 @@ class RoomNumber extends Model
     protected $fillable = [
         'room_variant_id',
         'room_number',
+        'floor',
         'status'
     ];
 
     public function variant()
-{
-    return $this->belongsTo(
-        RoomVariant::class,
-        'room_variant_id'
-    );
-}
+    {
+        return $this->belongsTo(
+            RoomVariant::class,
+            'room_variant_id'
+        );
+    }
 }

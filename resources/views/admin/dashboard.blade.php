@@ -6,7 +6,8 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
 
 
 <div class="layout">
@@ -22,7 +23,8 @@
         <div class="row g-3 mb-4">
 
             <div class="col-md-4">
-                <div class="card-click p-4 d-flex flex-column align-items-center justify-content-center" style="min-height: 155px; border-radius: 12px;">
+                <div class="card-click p-4 d-flex flex-column align-items-center justify-content-center"
+                    style="min-height: 155px; border-radius: 12px;">
                     <h2 class="stat-number text-dark m-0">
                         {{ $totalKamar }}
                     </h2>
@@ -33,7 +35,8 @@
             </div>
 
             <div class="col-md-4">
-                <div class="card-click p-4 d-flex flex-column align-items-center justify-content-center" style="min-height: 155px; border-radius: 12px;">
+                <div class="card-click p-4 d-flex flex-column align-items-center justify-content-center"
+                    style="min-height: 155px; border-radius: 12px;">
                     <h2 class="stat-number text-success m-0">
                         {{ $kamarTersedia }}
                     </h2>
@@ -44,7 +47,8 @@
             </div>
 
             <div class="col-md-4">
-                <div class="card-click p-4 d-flex flex-column align-items-center justify-content-center" style="min-height: 155px; border-radius: 12px;">
+                <div class="card-click p-4 d-flex flex-column align-items-center justify-content-center"
+                    style="min-height: 155px; border-radius: 12px;">
                     <h2 class="stat-number text-warning m-0">
                         {{ $menungguPembayaran }}
                     </h2>
@@ -63,22 +67,22 @@
                         <span class="fw-bold text-secondary" style="font-size: 14px;">Periode Grafik:</span>
                     </div>
                     <div class="col-auto">
-                        <input type="date" name="start_date" class="form-control form-control-sm" 
-                               value="{{ request('start_date', now()->subDays(30)->format('Y-m-d')) }}">
+                        <input type="date" name="start_date" class="form-control form-control-sm"
+                            value="{{ request('start_date', now()->subDays(30)->format('Y-m-d')) }}">
                     </div>
                     <div class="col-auto text-muted">s/d</div>
                     <div class="col-auto">
-                        <input type="date" name="end_date" class="form-control form-control-sm" 
-                               value="{{ request('end_date', now()->format('Y-m-d')) }}">
+                        <input type="date" name="end_date" class="form-control form-control-sm"
+                            value="{{ request('end_date', now()->format('Y-m-d')) }}">
                     </div>
                     <div class="col-auto">
                         <button type="submit" class="btn btn-sm btn-dark px-3">
                             Filter Data
                         </button>
                         @if(request('start_date') || request('end_date'))
-                            <a href="{{ request()->url() }}" class="btn btn-sm btn-outline-secondary ms-1">
-                                Reset
-                            </a>
+                        <a href="{{ request()->url() }}" class="btn btn-sm btn-outline-secondary ms-1">
+                            Reset
+                        </a>
                         @endif
                     </div>
                 </form>
@@ -130,45 +134,45 @@
                         </thead>
                         <tbody>
                             @forelse($reservations as $item)
-                                <tr>
-                                    <td>
-                                        {{ $item->user->name ?? '-' }}
-                                    </td>
-                                    <td>
-                                        {{ $item->room->title ?? $item->room->name ?? '-' }}
-                                    </td>
-                                    <td>
-                                        {{ $item->check_in }}
-                                    </td>
-                                    <td>
-                                        {{ $item->check_out }}
-                                    </td>
-                                    <td>
-                                        @if($item->status == 'Lunas')
-                                            <span class="badge bg-success">
-                                                {{ $item->status }}
-                                            </span>
-                                        @elseif($item->status == 'Menunggu Pembayaran')
-                                            <span class="badge bg-warning text-dark">
-                                                {{ $item->status }}
-                                            </span>
-                                        @elseif($item->status == 'Dibatalkan')
-                                            <span class="badge bg-danger">
-                                                {{ $item->status }}
-                                            </span>
-                                        @else
-                                            <span class="badge bg-secondary">
-                                                {{ $item->status }}
-                                            </span>
-                                        @endif
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    {{ $item->user->name ?? '-' }}
+                                </td>
+                                <td>
+                                    {{ $item->room->title ?? $item->room->name ?? '-' }}
+                                </td>
+                                <td>
+                                    {{ $item->check_in }}
+                                </td>
+                                <td>
+                                    {{ $item->check_out }}
+                                </td>
+                                <td>
+                                    @if($item->status == 'Lunas')
+                                    <span class="badge bg-success">
+                                        {{ $item->status }}
+                                    </span>
+                                    @elseif($item->status == 'Menunggu Pembayaran')
+                                    <span class="badge bg-warning text-dark">
+                                        {{ $item->status }}
+                                    </span>
+                                    @elseif($item->status == 'Dibatalkan')
+                                    <span class="badge bg-danger">
+                                        {{ $item->status }}
+                                    </span>
+                                    @else
+                                    <span class="badge bg-secondary">
+                                        {{ $item->status }}
+                                    </span>
+                                    @endif
+                                </td>
+                            </tr>
                             @empty
-                                <tr>
-                                    <td colspan="5" class="text-center text-muted py-4">
-                                        Belum ada data booking
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">
+                                    Belum ada data booking
+                                </td>
+                            </tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -181,9 +185,10 @@
                 <div class="section-title mb-2">
                     Tindakan Cepat
                 </div>
-                <a href="#" class="btn btn-dark">
+                <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#tambahKamarModal">
+
                     + Tambah Kamar
-                </a>
+                </button>
             </div>
         </div>
 
@@ -244,5 +249,81 @@
         }
     });
 </script>
+
+<!-- Modal Tambah Kamar -->
+<div class="modal fade" id="tambahKamarModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form action="{{ route('admin.kamar.tambah') }}" method="POST">
+                @csrf
+
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Tambah Kamar
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <label class="form-label">
+                        Sub Tipe Kamar
+                    </label>
+
+                    <select name="room_variant_id" class="form-select" required>
+
+                        @foreach(\App\Models\RoomVariant::all() as $variant)
+                        <option value="{{ $variant->id }}">
+                            {{ $variant->name }}
+                        </option>
+                        @endforeach
+
+                    </select>
+
+                    <label class="form-label mt-3">
+                        Jumlah Kamar
+                    </label>
+
+                    <input type="number" name="jumlah" class="form-control" min="1" value="1" required>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">
+                        Tambah
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if(session('success'))
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Berhasil!',
+    text: '{{ session('success') }}',
+    showConfirmButton: false,
+    timer: 2000
+});
+</script>
+@endif
+
+@if(session('error'))
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Gagal!',
+    text: '{{ session('error') }}',
+    confirmButtonText: 'OK'
+});
+</script>
+@endif
 
 @endsection

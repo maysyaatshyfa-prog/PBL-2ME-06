@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Reservation;
 use App\Models\RoomVariant;
+use App\Models\RoomNumber;
 use App\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -153,6 +154,46 @@ class AdminController extends Controller
     return view(
         'admin.daftar_kamar',
         compact('variant')
+    );
+}
+
+public function tambahKamar(Request $request)
+{
+    $request->validate([
+        'room_variant_id' => 'required',
+        'jumlah' => 'required|integer|min:1'
+    ]);
+
+    $variant = RoomVariant::findOrFail(
+        $request->room_variant_id
+    );
+
+    $lastRoom = RoomNumber::where(
+            'room_variant_id',
+            $variant->id
+        )
+        ->orderBy('room_number', 'desc')
+        ->first();
+
+    if ($lastRoom) {
+        $nextNumber = $lastRoom->room_number + 1;
+    } else {
+        $nextNumber = 101;
+    }
+
+    for ($i = 0; $i < $request->jumlah; $i++) {
+
+        RoomNumber::create([
+            'room_variant_id' => $variant->id,
+            'room_number' => $nextNumber + $i,
+            'floor' => substr($nextNumber + $i, 0, 1),
+            'status' => 'tersedia'
+        ]);
+    }
+
+    return back()->with(
+        'success',
+        $request->jumlah . ' kamar berhasil ditambahkan'
     );
 }
 }

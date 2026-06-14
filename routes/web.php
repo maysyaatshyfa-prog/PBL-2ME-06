@@ -75,7 +75,12 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/kelola_kamar', [AdminController::class, 'kelolaKamar']);
     Route::get('/kamar/{id}', [AdminController::class, 'daftarKamar'])
         ->name('admin.kamar.detail');
-        
+
+    Route::post(
+    '/kamar/tambah',
+    [AdminController::class, 'tambahKamar']
+)->name('admin.kamar.tambah');
+
     // Reservasi Admin
     Route::get('/reservasi', [AdminController::class, 'reservasiIndex'])
         ->name('admin.reservasi.index');
