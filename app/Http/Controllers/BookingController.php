@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
+use App\Models\RoomNumber;
 use App\Models\RoomVariant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,14 +14,17 @@ use Carbon\Carbon;
 class BookingController extends Controller
 {
     public function index()
-    {
-        $bookings = Reservation::with('room')
-            ->where('user_id', Auth::id())
-            ->latest()
-            ->get();
+{
+    $bookings = Reservation::with([
+    'room',
+    'roomNumber.variant'
+])
+->where('user_id', Auth::id())
+->latest()
+->get();
 
-        return view('bookinghistory', compact('bookings'));
-    }
+    return view('bookinghistory', compact('bookings'));
+}
 
     public function show($id)
 {
@@ -112,29 +116,60 @@ class BookingController extends Controller
     }
 
     public function success()
-    {
-        $reservation = Reservation::create([
-    'user_id' => Auth::id(),
-    'room_id' => session('room_id'),
-    'check_in' => session('check_in'),
-    'check_out' => session('check_out'),
-    'total_harga' => session('total_harga'),
-    'status' => 'Dalam Proses',
-    'status_pembayaran' => 'Lunas',
-]);
+{
+    $roomId = session('room_id');
 
-        $bookingCode = 'RSV-' . str_pad(
-            $reservation->id,
-            6,
-            '0',
-            STR_PAD_LEFT
-        );
+    $variant = RoomVariant::where(
+        'room_id',
+        $roomId
+    )->first();
 
-        return view('success', compact(
+    $roomNumber = RoomNumber::where(
+            'room_variant_id',
+            $variant->id
+        )
+        ->where('status', 'tersedia')
+        ->first();
+
+    if (!$roomNumber) {
+
+        return redirect('/')
+            ->with(
+                'error',
+                'Kamar sudah penuh'
+            );
+    }
+
+    $roomNumber->update([
+        'status' => 'terisi'
+    ]);
+
+    $reservation = Reservation::create([
+        'user_id'            => Auth::id(),
+        'room_id'            => $roomId,
+        'room_number_id'     => $roomNumber->id,
+        'check_in'           => session('check_in'),
+        'check_out'          => session('check_out'),
+        'total_harga'        => session('total_harga'),
+        'status'             => 'Dalam Proses',
+        'status_pembayaran'  => 'Lunas',
+    ]);
+
+    $bookingCode = 'RSV-' . str_pad(
+        $reservation->id,
+        6,
+        '0',
+        STR_PAD_LEFT
+    );
+
+    return view(
+        'success',
+        compact(
             'reservation',
             'bookingCode'
-        ));
-    }
+        )
+    );
+}
 
     public function storePayment(Request $request, $id)
     {

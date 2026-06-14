@@ -39,15 +39,22 @@
                         <td class="text-start">
                             <div class="d-flex align-items-center py-2">
 
-                                <img src="{{ ($item->room && $item->room->firstVariant && $item->room->firstVariant->image)
-        ? asset('images/' . $item->room->firstVariant->image)
-        : asset('img/kamar.jpg') }}"
-                                    class="rounded-3 shadow-sm me-3"
+                                <img src="{{ optional(optional($item->roomNumber)->variant)->image
+        ? asset('images/' . $item->roomNumber->variant->image)
+        : asset('img/kamar.jpg') }}" class="rounded-3 shadow-sm me-3"
                                     style="width:110px;height:75px;object-fit:cover;">
 
-                                <span class="fw-semibold">
-                                    {{ $item->room->title ?? $item->room->name ?? 'Kamar Tidak Ditemukan' }}
-                                </span>
+                                <div class="text-start">
+
+                                    <div class="fw-semibold">
+                                        {{ optional(optional($item->roomNumber)->variant)->name ?? 'Kamar Tidak Ditemukan' }}
+                                    </div>
+
+                                    <small class="text-muted">
+                                        Kamar {{ optional($item->roomNumber)->room_number }}
+                                    </small>
+
+                                </div>
 
                             </div>
                         </td>
@@ -63,32 +70,32 @@
                         {{-- STATUS RESERVASI --}}
                         <td>
                             @if($item->status == 'Selesai')
-                                <span class="badge bg-success px-3 py-2 rounded-pill">
-                                    Selesai
-                                </span>
+                            <span class="badge bg-success px-3 py-2 rounded-pill">
+                                Selesai
+                            </span>
 
                             @elseif($item->status == 'Batal')
-                                <span class="badge bg-danger px-3 py-2 rounded-pill">
-                                    Batal
-                                </span>
+                            <span class="badge bg-danger px-3 py-2 rounded-pill">
+                                Batal
+                            </span>
 
                             @else
-                                <span class="badge bg-primary px-3 py-2 rounded-pill">
-                                    Dalam Proses
-                                </span>
+                            <span class="badge bg-primary px-3 py-2 rounded-pill">
+                                Dalam Proses
+                            </span>
                             @endif
                         </td>
 
                         {{-- STATUS PEMBAYARAN --}}
                         <td>
                             @if($item->status_pembayaran == 'Lunas')
-                                <span class="badge bg-success px-3 py-2 rounded-pill">
-                                    Lunas
-                                </span>
+                            <span class="badge bg-success px-3 py-2 rounded-pill">
+                                Lunas
+                            </span>
                             @else
-                                <span class="badge bg-danger px-3 py-2 rounded-pill">
-                                    Belum Bayar
-                                </span>
+                            <span class="badge bg-danger px-3 py-2 rounded-pill">
+                                Belum Bayar
+                            </span>
                             @endif
                         </td>
 
@@ -103,25 +110,22 @@
                                 </a>
 
                                 @if($item->status_pembayaran != 'Lunas')
-                                    <a href="/payment/{{ $item->id }}"
-                                        class="btn btn-success btn-sm rounded-pill px-3">
-                                        Bayar
-                                    </a>
+                                <a href="/payment/{{ $item->id }}" class="btn btn-success btn-sm rounded-pill px-3">
+                                    Bayar
+                                </a>
                                 @endif
 
                                 @if($item->status != 'Selesai' && $item->status != 'Batal')
-                                    <form action="/booking/cancel/{{ $item->id }}"
-                                        method="POST"
-                                        class="d-inline"
-                                        onsubmit="return confirm('Yakin ingin membatalkan reservasi ini?')">
+                                <form action="/booking/cancel/{{ $item->id }}" method="POST" class="d-inline"
+                                    onsubmit="return confirm('Yakin ingin membatalkan reservasi ini?')">
 
-                                        @csrf
+                                    @csrf
 
-                                        <button class="btn btn-outline-danger btn-sm rounded-pill px-3">
-                                            Batalkan
-                                        </button>
+                                    <button class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                                        Batalkan
+                                    </button>
 
-                                    </form>
+                                </form>
                                 @endif
 
                             </div>

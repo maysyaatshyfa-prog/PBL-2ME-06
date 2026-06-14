@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Reservation;
 use App\Models\RoomVariant;
+use App\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 

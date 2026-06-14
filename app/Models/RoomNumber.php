@@ -13,10 +13,10 @@ class RoomNumber extends Model
     ];
 
     public function variant()
-    {
-        return $this->belongsTo(
-            RoomVariant::class,
-            'room_variant_id'
-        );
-    }
+{
+    return $this->belongsTo(
+        RoomVariant::class,
+        'room_variant_id'
+    );
+}
 }
