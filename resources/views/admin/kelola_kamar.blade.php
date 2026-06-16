@@ -3,7 +3,21 @@
 @section('title', 'Kelola Kamar')
 
 @section('content')
-
+@push('scripts')
+@if(session('success'))
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: @json(session('success')),
+            timer: 2000,
+            showConfirmButton: false
+        });
+    });
+</script>
+@endif
+@endpush
 <div class="layout d-flex">
 
     {{-- SIDEBAR --}}
@@ -134,7 +148,7 @@
                                 </td>
 
                                 <td>
-                                    {{ $room->rooms_count ?? 0 }}
+                                     {{ $room->room_numbers_count ?? 0 }}
                                 </td>
 
                                 <td>
@@ -153,12 +167,20 @@
                                         </button>
 
                                         {{-- Edit --}}
-                                        <a href="#" class="btn btn-outline-primary btn-action" title="Edit">
-
-                                            <i class="bi bi-pencil-square"></i>
-
-                                        </a>
-
+                                        <button type="button" class="btn btn-outline-primary" onclick='openEditModal(
+        {{ $room->id }},
+        @json($room->name),
+        {{ $room->price }},
+        {{ $room->capacity }},
+        @json($room->size),
+        @json($room->bed_type),
+        @json($room->room_view),
+        @json($room->facilities),
+        "{{ asset('images/'.$room->image) }}",
+        @json($room->gallery)
+    )'>
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
                                         {{-- Hapus --}}
                                         <button class="btn btn-outline-danger btn-action" title="Hapus">
 
@@ -195,7 +217,133 @@
     </div>
 
 </div>
+{{-- MODAL EDIT KAMAR --}}
+<div class="modal fade" id="editRoomModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
 
+            <form id="editRoomForm" method="POST" enctype="multipart/form-data">
+
+                @csrf
+                @method('PUT')
+
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Edit Kamar
+                    </h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label>Nama Varian</label>
+                            <input type="text" name="name" id="edit_name" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Harga</label>
+                            <input type="number" name="price" id="edit_price" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Kapasitas</label>
+                            <input type="number" name="capacity" id="edit_capacity" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Ukuran Kamar</label>
+                            <input type="text" name="size" id="edit_size" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Tipe Kasur</label>
+                            <input type="text" name="bed_type" id="edit_bed_type" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>View Kamar</label>
+                            <input type="text" name="room_view" id="edit_room_view" class="form-control">
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <label>Fasilitas</label>
+                            <textarea name="facilities" id="edit_facilities" rows="4" class="form-control"></textarea>
+                        </div>
+
+                        <div class="col-12">
+
+                            <label class="form-label fw-bold">
+                                Gambar Utama
+                            </label>
+
+                            <div class="image-card">
+
+                                <div class="main-image-wrapper">
+                                    <img id="preview_image" class="main-room-image">
+                                </div>
+
+                                <div class="mt-3">
+                                    <label class="upload-box">
+                                        <i class="bi bi-cloud-arrow-up"></i>
+
+                                        <span>Upload Gambar Utama</span>
+
+                                        <small>PNG, JPG, JPEG</small>
+
+                                        <div id="imageFileName" class="selected-file">
+                                            Belum ada file dipilih
+                                        </div>
+
+                                        <input type="file" name="image" id="imageInput" hidden>
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12">
+
+                            <label class="form-label fw-bold">
+                                Gallery Kamar
+                            </label>
+
+                            <div id="gallery_preview" class="gallery-grid"></div>
+
+                            <div class="mt-3">
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Batal
+                    </button>
+
+                    <button type="submit" class="btn btn-primary">
+                        Simpan Perubahan
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
 <script>
     function showRooms(name, rooms) {
         document
@@ -224,7 +372,7 @@
             <div class="room-box ${statusClass}">
                 ${room.room_number}
             </div>
-        `;
+            `;
         });
 
         document
@@ -237,9 +385,74 @@
             .getElementById('room-detail-card')
             .classList.add('d-none');
     }
+
+    function openEditModal(
+        id,
+        name,
+        price,
+        capacity,
+        size,
+        bed_type,
+        room_view,
+        facilities,
+        image,
+        gallery
+    ) {
+
+        document.getElementById('edit_name').value = name;
+        document.getElementById('edit_price').value = price;
+        document.getElementById('edit_capacity').value = capacity;
+        document.getElementById('edit_size').value = size;
+        document.getElementById('edit_bed_type').value = bed_type;
+        document.getElementById('edit_room_view').value = room_view;
+        document.getElementById('edit_facilities').value = facilities;
+
+        document.getElementById('preview_image').src = image;
+
+        let preview = document.getElementById('gallery_preview');
+        preview.innerHTML = '';
+
+        try {
+
+            let images = JSON.parse(gallery);
+
+            images.forEach((img, index) => {
+                preview.innerHTML += `
+        <div class="gallery-item">
+
+            <img src="/images/${img}" class="gallery-img">
+
+            <input type="hidden"
+                   name="old_gallery[]"
+                   value="${img}">
+
+            <input type="file"
+                   name="replace_gallery[${index}]"
+                   class="form-control mt-2">
+
+        </div>
+    `;
+            });
+
+        } catch (e) {
+            console.log('Gallery error:', e);
+        }
+
+        document.getElementById('editRoomForm').action =
+            `/admin/kelola-kamar/${id}`;
+
+        new bootstrap.Modal(
+            document.getElementById('editRoomModal')
+        ).show();
+    }
+    document.getElementById('imageInput')
+        .addEventListener('change', function () {
+
+            document.getElementById('imageFileName')
+                .innerText = this.files.length ?
+                this.files[0].name :
+                'Belum ada file dipilih';
+        });
 </script>
 
 @endsection
-
-
-

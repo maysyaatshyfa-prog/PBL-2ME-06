@@ -21,6 +21,8 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('styles/style_resika.css') }}">
     <link rel="stylesheet" href="{{ asset('styles/style_maysya.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/style_aulia.css') }}">
+
 
     
 </head>
@@ -30,7 +32,7 @@
     @yield('content')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @stack('scripts')
 
 </body>

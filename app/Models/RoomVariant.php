@@ -2,17 +2,22 @@
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Room;
+use App\Models\RoomNumber;
 
 class RoomVariant extends Model
 {
     protected $fillable = [
-        'room_id',
-        'name',
-        'price',
-        'capacity',
-        'size',
-        'image'
-    ];
+    'room_id',
+    'name',
+    'price',
+    'capacity',
+    'size',
+    'image',
+    'gallery',
+    'bed_type',
+    'room_view',
+    'facilities'
+];
 
     public function room()
     {
@@ -26,4 +31,6 @@ class RoomVariant extends Model
         'room_variant_id'
     );
 }
+
+
 }

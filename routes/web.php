@@ -26,17 +26,12 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /* ROOM LIST (VARIANT FILTER) */
 Route::get('/rooms', [RoomVariantController::class, 'index'])->name('rooms.index');
-Route::get('/rooms/{type}', function ($type) {
-    return view('rooms.type', [
-        'typeKey' => $type
-    ]);
+
+Route::get('/rooms/{id}', [RoomVariantController::class, 'show'])->name('rooms.show');
+
+Route::get('/rooms/type/{type}', function ($type) {
+    return view('rooms.type', compact('type'));
 });
-
-/* ROOM DETAIL */
-Route::get('/room/{id}', [RoomVariantController::class, 'show'])->name('room.detail');
-
-Route::get('/variant/{id}', [RoomVariantController::class, 'show'])
-    ->name('variant.detail');
 
 /* BOOKING */
 Route::middleware('auth')->group(function () {
@@ -72,7 +67,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     Route::get('/dashboard', [AdminController::class, 'dashboard']);
 
-    Route::get('/kelola_kamar', [AdminController::class, 'kelolaKamar']);
+    Route::get('/kelola_kamar', [AdminController::class, 'kelolaKamar'])
+    ->name('admin.kelola-kamar');
     Route::get('/kamar/{id}', [AdminController::class, 'daftarKamar'])
         ->name('admin.kamar.detail');
 
@@ -108,4 +104,10 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/pembatalan/tolak/{id}',
         [AdminController::class, 'tolakPembatalan'])
         ->name('admin.pembatalan.tolak');
+
+        Route::get('/kelola-kamar/{id}/edit', [AdminController::class, 'edit'])
+    ->name('admin.kelola-kamar.edit');
+
+Route::put('/kelola-kamar/{id}', [AdminController::class, 'update'])
+    ->name('admin.kelola-kamar.update');
 });

@@ -82,7 +82,7 @@ class BookingController extends Controller
 
         $snapToken = Snap::getSnapToken([
             'transaction_details' => [
-                'order_id' => 'BOOK-' . time(),
+                'order_id' => 'RSV-' . time(),
                 'gross_amount' => $totalPrice,
             ],
             'customer_details' => [

@@ -8,87 +8,125 @@
 
 @php
 $roomTypes = [
+
     'standard' => [
         'title' => 'Standard Room',
-        'description' => 'Kamar Standard adalah pilihan ideal untuk tamu yang mengutamakan kenyamanan dasar dengan harga terjangkau. Cocok untuk perjalanan bisnis singkat atau liburan hemat.',
+        'description' => 'Kamar Standard merupakan pilihan ideal bagi tamu yang menginginkan kenyamanan dengan harga yang terjangkau. Didesain dengan suasana yang hangat dan modern, tipe kamar ini cocok untuk perjalanan bisnis maupun liburan singkat bersama keluarga atau teman.',
+
         'sub_rooms' => [
             [
                 'name' => 'Standard Twin',
-                'desc' => 'Memiliki 2 kasur terpisah, cocok untuk teman atau rekan kerja yang sedang dinas di Batam.',
+                'desc' => 'Memiliki dua tempat tidur terpisah yang nyaman, cocok untuk teman perjalanan, rekan kerja, maupun tamu yang menginginkan ruang tidur terpisah.',
                 'size' => '20 m²',
+                'capacity' => '2 Dewasa',
+                'bed' => '2 Single Bed',
+                'view' => 'City View',
                 'image' => 'standar1.png',
             ],
             [
                 'name' => 'Standard Queen',
-                'desc' => 'Memiliki 1 kasur besar menghadap ke area taman dalam hotel yang lebih tenang.',
+                'desc' => 'Dilengkapi satu tempat tidur ukuran queen yang nyaman dengan suasana kamar yang tenang dan cocok untuk pasangan maupun tamu individu.',
                 'size' => '24 m²',
+                'capacity' => '2 Dewasa',
+                'bed' => '1 Queen Bed',
+                'view' => 'Garden View',
                 'image' => 'standar2.png',
             ],
         ],
+
         'facilities' => [
             'AC',
             'WiFi Gratis',
-            'TV LED 32 inch',
-            'Kamar mandi shower air panas/dingin',
-            'Air mineral gratis'
-        ]
+            'TV LED 32 Inch',
+            'Kamar Mandi Shower Air Panas & Dingin',
+            'Air Mineral Gratis',
+            'Lemari Pakaian',
+            'Meja Kerja',
+            'Perlengkapan Mandi'
+        ],
+
     ],
 
     'deluxe' => [
         'title' => 'Deluxe Room',
-        'description' => 'Deluxe Room menawarkan kenyamanan lebih dengan ruang yang lebih luas dan fasilitas premium untuk pengalaman menginap yang lebih santai dan elegan.',
+        'description' => 'Deluxe Room menawarkan ruang yang lebih luas dengan fasilitas yang lebih lengkap untuk memberikan pengalaman menginap yang lebih nyaman. Cocok untuk tamu yang menginginkan kenyamanan ekstra selama perjalanan bisnis maupun liburan.',
+
         'sub_rooms' => [
             [
                 'name' => 'Deluxe Executive',
-                'desc' => 'Dilengkapi dengan meja kerja yang lebih luas dan kursi ergonomis untuk tamu yang butuh bekerja.',
+                'desc' => 'Dirancang khusus untuk tamu bisnis dengan area kerja yang lebih luas serta kursi ergonomis yang mendukung produktivitas selama menginap.',
                 'size' => '32 m²',
+                'capacity' => '2 Dewasa + 1 Anak',
+                'bed' => '1 King Bed',
+                'view' => 'City View',
                 'image' => 'deluxe1.png',
             ],
             [
                 'name' => 'Deluxe Balcony',
-                'desc' => 'Kamar dengan akses balkon pribadi untuk menikmati udara luar secara langsung.',
+                'desc' => 'Memiliki balkon pribadi yang memberikan pengalaman menginap lebih santai sambil menikmati pemandangan kota maupun area sekitar hotel.',
                 'size' => '35 m²',
+                'capacity' => '2 Dewasa + 1 Anak',
+                'bed' => '1 King Bed',
+                'view' => 'Garden View',
                 'image' => 'deluxe2.png',
             ],
         ],
+
         'facilities' => [
             'AC',
             'WiFi Premium',
-            'Smart TV 43 inch',
+            'Smart TV 43 Inch',
             'Mini Bar',
             'Coffee & Tea Maker',
-            'Sofa area'
-        ]
+            'Sofa Area',
+            'Meja Kerja Eksekutif',
+            'Safe Deposit Box',
+            'Air Mineral Gratis'
+        ],
+
     ],
 
     'suite' => [
         'title' => 'Suite Room',
-        'description' => 'Suite Room adalah pilihan paling mewah dengan ruang tamu terpisah, fasilitas eksklusif, dan desain elegan untuk pengalaman menginap kelas premium.',
+        'description' => 'Suite Room merupakan pilihan kamar paling eksklusif dengan ruang yang luas, fasilitas premium, serta desain interior yang elegan. Cocok bagi tamu yang menginginkan kenyamanan maksimal dan pengalaman menginap kelas atas.',
+
         'sub_rooms' => [
             [
                 'name' => 'Executive Suite',
-                'desc' => 'Memiliki ruang tamu (living room) terpisah untuk menerima tamu atau bersantai dengan sofa mewah.',
+                'desc' => 'Memiliki ruang tamu terpisah yang luas sehingga memberikan privasi lebih dan cocok untuk menerima tamu maupun bersantai bersama keluarga.',
                 'size' => '48 m²',
+                'capacity' => '3 Dewasa',
+                'bed' => '1 King Bed',
+                'view' => 'City View',
                 'image' => 'suite1.png',
             ],
             [
                 'name' => 'Panoramic Suite',
-                'desc' => 'Terletak di sudut bangunan (corner room) sehingga memiliki pemandangan 180 derajat ke arah laut atau kota.',
+                'desc' => 'Terletak di sudut bangunan dengan jendela besar yang menawarkan pemandangan panorama kota maupun laut dari berbagai sisi kamar.',
                 'size' => '60 m²',
+                'capacity' => '4 Dewasa',
+                'bed' => '1 King Bed',
+                'view' => 'Sea & City View',
                 'image' => 'suite2.png',
             ],
         ],
+
         'facilities' => [
             'Living Room Terpisah',
-            'Bathtub + Rain Shower',
+            'Bathtub & Rain Shower',
             'Balcony Pribadi',
             'VIP Service',
             'Mini Kitchen',
-            'Bathrobe & Slipper'
-        ]
-    ],
-];
+            'Bathrobe & Slipper',
+            'Coffee Machine',
+            'Smart TV 55 Inch',
+            'Safe Deposit Box',
+            'Mini Bar Premium'
+        ],
 
+    ],
+
+];
 $type = $roomTypes[$typeKey] ?? null;
 @endphp
 

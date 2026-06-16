@@ -59,39 +59,6 @@
 
                 </div>
 
-                <!-- Metode Pembayaran -->
-                <h4 class="mb-3">Pilih Metode Pembayaran</h4>
-
-                <form action="{{ route('payment.page') }}" method="GET">
-
-                    <div class="row g-3 mb-4">
-
-                        <div class="col-md-4">
-                            <label class="payment-card">
-                                <input type="radio" name="payment_method" value="transfer" required>
-                                <h5>Transfer Bank</h5>
-                                <p>Transfer melalui rekening bank.</p>
-                            </label>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="payment-card">
-                                <input type="radio" name="payment_method" value="qris">
-                                <h5>QRIS</h5>
-                                <p>Bayar dengan scan QRIS.</p>
-                            </label>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="payment-card">
-                                <input type="radio" name="payment_method" value="hotel">
-                                <h5>Bayar di Hotel</h5>
-                                <p>Pembayaran saat check-in.</p>
-                            </label>
-                        </div>
-
-                    </div>
-
                     <div class="d-flex gap-3">
 
                         <a href="{{ url()->previous() }}"

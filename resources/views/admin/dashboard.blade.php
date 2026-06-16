@@ -4,6 +4,7 @@
 
 @section('content')
 
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
@@ -301,29 +302,38 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</script>
+
+@push('scripts')
 
 @if(session('success'))
 <script>
-Swal.fire({
-    icon: 'success',
-    title: 'Berhasil!',
-    text: '{{ session('success') }}',
-    showConfirmButton: false,
-    timer: 2000
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: '{{ session('success') }}',
+        showConfirmButton: false,
+        timer: 2000
+    });
 });
 </script>
 @endif
 
 @if(session('error'))
 <script>
-Swal.fire({
-    icon: 'error',
-    title: 'Gagal!',
-    text: '{{ session('error') }}',
-    confirmButtonText: 'OK'
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal!',
+        text: '{{ session('error') }}',
+        confirmButtonText: 'OK'
+    });
 });
 </script>
 @endif
+
+@endpush
 
 @endsection

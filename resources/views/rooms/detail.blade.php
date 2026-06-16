@@ -28,21 +28,21 @@
                         </div>
                         <div class="thumbnail-list">
                             @php
-                                // Mengubah data JSON secara aman. Jika bernilai 0 atau null, paksa menjadi array kosong
-                                $galleryImages = json_decode($variant->gallery, true);
-                                if (!is_array($galleryImages)) {
-                                    $galleryImages = [];
-                                }
+                            // Mengubah data JSON secara aman. Jika bernilai 0 atau null, paksa menjadi array kosong
+                            $galleryImages = json_decode($variant->gallery, true);
+                            if (!is_array($galleryImages)) {
+                            $galleryImages = [];
+                            }
                             @endphp
 
                             @if(count($galleryImages) > 0)
-                                {{-- Jika format JSON valid dan ada isinya --}}
-                                @foreach($galleryImages as $img)
-                                    <img src="{{ asset('images/'.$img) }}">
-                                @endforeach
+                            {{-- Jika format JSON valid dan ada isinya --}}
+                            @foreach($galleryImages as $img)
+                            <img src="{{ asset('images/'.$img) }}">
+                            @endforeach
                             @else
-                                {{-- Cadangan: Jika galeri kosong atau berisi angka 0, gunakan gambar utama sebagai thumbnail --}}
-                                <img src="{{ asset('images/'.$variant->image) }}">
+                            {{-- Cadangan: Jika galeri kosong atau berisi angka 0, gunakan gambar utama sebagai thumbnail --}}
+                            <img src="{{ asset('images/'.$variant->image) }}">
                             @endif
                         </div>
                     </div>
@@ -55,24 +55,20 @@
                     <div class="detail-card">
                         <h3>Fasilitas Kamar</h3>
                         <div class="facility-list">
-                            <span>Wifi Gratis</span>
-                            <span>AC</span>
-                            <span>TV LED</span>
-                            <span>Shower</span>
-                            <span>Breakfast</span>
-                            <span>Meja Kerja</span>
-                            <span>Lemari</span>
-                            <span>Air Mineral</span>
+                            @foreach(explode(',', $variant->facilities ?? '') as $facility)
+                            <span>{{ trim($facility) }}</span>
+                            @endforeach
                         </div>
                     </div>
 
                     <div class="detail-card">
                         <h3>Kebijakan Hotel</h3>
                         <ul>
-                            <li>Check-in mulai pukul 14:00</li>
-                            <li>Check-out maksimal pukul 12:00</li>
+                            <li>Check-in mulai pukul 14.00 WIB</li>
+                            <li>Check-out maksimal pukul 12.00 WIB</li>
                             <li>Dilarang merokok di dalam kamar</li>
-                            <li>Pembatalan sesuai syarat hotel</li>
+                            <li>Hewan peliharaan tidak diperbolehkan</li>
+                            <li>Pembatalan mengikuti ketentuan hotel</li>
                         </ul>
                     </div>
                 </div>

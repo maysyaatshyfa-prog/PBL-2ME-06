@@ -196,4 +196,66 @@ public function tambahKamar(Request $request)
         $request->jumlah . ' kamar berhasil ditambahkan'
     );
 }
+
+public function edit($id)
+{
+    $variant = RoomVariant::findOrFail($id);
+
+    return view('admin.edit_kamar', compact('variant'));
+}
+
+public function update(Request $request, $id)
+{
+    $variant = RoomVariant::findOrFail($id);
+
+    $data = [
+        'name' => $request->name,
+        'price' => $request->price,
+        'capacity' => $request->capacity,
+        'size' => $request->size,
+        'bed_type' => $request->bed_type,
+        'room_view' => $request->room_view,
+        'facilities' => $request->facilities,
+    ];
+
+    if ($request->hasFile('image')) {
+
+        $imageName = time().'_'.$request->image->getClientOriginalName();
+
+        $request->image->move(
+            public_path('images'),
+            $imageName
+        );
+
+        $data['image'] = $imageName;
+    }
+
+    $gallery = json_decode($variant->gallery, true) ?? [];
+
+if ($request->has('replace_gallery')) {
+
+    foreach ($request->file('replace_gallery') as $index => $file) {
+
+        if ($file) {
+
+            $fileName = time().'_'.$file->getClientOriginalName();
+
+            $file->move(
+                public_path('images'),
+                $fileName
+            );
+
+            $gallery[$index] = $fileName;
+        }
+    }
+}
+
+$data['gallery'] = json_encode($gallery);
+
+    $variant->update($data);
+
+    return redirect()
+        ->route('admin.kelola-kamar')
+        ->with('success', 'Data kamar berhasil diperbarui');
+}
 }
