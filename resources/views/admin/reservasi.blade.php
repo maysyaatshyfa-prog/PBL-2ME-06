@@ -23,7 +23,7 @@
 
         <div class="card mb-4 shadow-sm" style="border-radius: 10px;">
             <div class="card-body">
-                
+
                 <div class="table-responsive">
                     <table class="table table-hover text-center align-middle mb-0">
                         <thead class="text-muted" style="font-size: 13px;">
@@ -37,32 +37,34 @@
 
                         <tbody>
                             @if($reservations->isEmpty())
-                                <tr>
-                                    <td colspan="4" class="py-5 text-muted">
-                                        <i class="bi bi-inbox d-block mb-2" style="font-size: 2rem;"></i>
-                                        Belum ada data reservasi
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td colspan="4" class="py-5 text-muted">
+                                    <i class="bi bi-inbox d-block mb-2" style="font-size: 2rem;"></i>
+                                    Belum ada data reservasi
+                                </td>
+                            </tr>
                             @else
-                                @foreach($reservations as $res)
-                                    <tr>
-                                        <td class="fw-semibold">{{ $res->user->name ?? '-' }}</td>
-                                        <td>{{ $res->room->type ?? '-' }}</td>
-                                        <td>
-                                            <span class="badge bg-light text-dark border">
-                                                {{ $res->room->room_number ?? 'Belum Diatur' }}
-                                            </span>
-                                        </td>
+                            @foreach($reservations as $res)
+                            <tr>
+                                <td class="fw-semibold">{{ $res->user->name ?? '-' }}</td>
 
-                                        <td>
-                                            @if($res->status == 'menunggu')
-                                                <span class="badge bg-warning text-dark px-3">Menunggu</span>
-                                            @else
-                                                <span class="badge bg-success px-3">Selesai</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                <td>{{ $res->roomNumber->variant->name ?? '-' }}</td>
+
+                                <td>
+                                    <span class="badge bg-light text-dark border">
+                                        {{ $res->roomNumber->room_number ?? 'Belum Diatur' }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    @if($res->status == 'Menunggu')
+                                    <span class="badge bg-warning text-dark px-3">Menunggu</span>
+                                    @else
+                                    <span class="badge bg-success px-3">Selesai</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
                             @endif
                         </tbody>
                     </table>

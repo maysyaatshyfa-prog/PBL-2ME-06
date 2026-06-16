@@ -15,9 +15,9 @@ class BookingController extends Controller
 {
     public function index()
 {
-    $bookings = Reservation::with([
-    'room',
-    'roomNumber.variant'
+   $bookings = Reservation::with([
+    'roomNumber.variant',
+    'user'
 ])
 ->where('user_id', Auth::id())
 ->latest()
@@ -29,12 +29,12 @@ class BookingController extends Controller
     public function show($id)
 {
     $booking = Reservation::with([
-        'room.firstVariant',
-        'user'
-    ])
-        ->where('id', $id)
-        ->where('user_id', Auth::id())
-        ->firstOrFail();
+    'roomNumber.variant',
+    'user'
+])
+->where('id', $id)
+->where('user_id', Auth::id())
+->firstOrFail();
 
     return view('booking_detail', compact('booking'));
 }

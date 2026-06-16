@@ -80,7 +80,7 @@
                         <button type="submit" class="btn btn-sm btn-dark px-3">
                             Filter Data
                         </button>
-                        @if(request('start_date') || request('end_date'))
+                        @if(request()->filled('start_date') || request()->filled('end_date'))
                         <a href="{{ request()->url() }}" class="btn btn-sm btn-outline-secondary ms-1">
                             Reset
                         </a>
@@ -309,28 +309,30 @@
 
 @if(session('success'))
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    Swal.fire({
-        icon: 'success',
-        title: 'Berhasil!',
-        text: '{{ session('success') }}',
-        showConfirmButton: false,
-        timer: 2000
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: '{{ session('
+            success ') }}',
+            showConfirmButton: false,
+            timer: 2000
+        });
     });
-});
 </script>
 @endif
 
 @if(session('error'))
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    Swal.fire({
-        icon: 'error',
-        title: 'Gagal!',
-        text: '{{ session('error') }}',
-        confirmButtonText: 'OK'
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: '{{ session('
+            error ') }}',
+            confirmButtonText: 'OK'
+        });
     });
-});
 </script>
 @endif
 

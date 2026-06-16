@@ -31,48 +31,6 @@
             <h4 class="fw-bold mb-0">Kelola Kamar</h4>
         </div>
 
-        {{-- FILTER + SEARCH --}}
-        <form method="GET" action="{{ route('rooms.index') }}" class="d-flex gap-2 mb-4">
-
-            <input type="text" name="search" class="form-control" placeholder="Cari No Kamar..."
-                value="{{ request('search') }}">
-
-            <select name="type" class="form-control" onchange="this.form.submit()">
-
-                <option value="">Semua Tipe</option>
-                <option value="standard" {{ request('type') == 'standard' ? 'selected' : '' }}>
-                    Standard
-                </option>
-                <option value="deluxe" {{ request('type') == 'deluxe' ? 'selected' : '' }}>
-                    Deluxe
-                </option>
-                <option value="suite" {{ request('type') == 'suite' ? 'selected' : '' }}>
-                    Suite
-                </option>
-
-            </select>
-
-            <select name="status" class="form-control" onchange="this.form.submit()">
-
-                <option value="">Semua Status</option>
-                <option value="tersedia" {{ request('status') == 'tersedia' ? 'selected' : '' }}>
-                    Tersedia
-                </option>
-                <option value="booking" {{ request('status') == 'booking' ? 'selected' : '' }}>
-                    Booking
-                </option>
-                <option value="tidak" {{ request('status') == 'tidak' ? 'selected' : '' }}>
-                    Tidak Tersedia
-                </option>
-
-            </select>
-
-            <button class="btn btn-dark">
-                Cari
-            </button>
-
-        </form>
-
         {{-- POPUP DAFTAR KAMAR --}}
         <div id="room-detail-card" class="room-overlay d-none">
 
