@@ -62,3 +62,8 @@
     color: #6c757d;
     word-break: break-all;
 }
+
+#priceSlider{
+    margin-top:20px;
+    margin-bottom:20px;
+}

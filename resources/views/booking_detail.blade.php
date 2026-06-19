@@ -31,14 +31,10 @@
 
         {{-- DETAIL --}}
         <div class="box-card">
-            @if(
-            $booking->room &&
-            $booking->room->firstVariant &&
-            $booking->room->firstVariant->image
-            )
+            @if($booking->roomVariant && $booking->roomVariant->image)
 
             <div class="text-center mb-4">
-                <img src="{{ asset('images/' . $booking->room->firstVariant->image) }}" alt="Room Image"
+                <img src="{{ asset('images/' . $booking->roomVariant->image) }}" alt="Room Image"
                     class="img-fluid rounded-4 shadow" style="width:100%;height:350px;object-fit:cover;">
             </div>
 
@@ -56,85 +52,90 @@
             </h5>
 
             <div class="detail-item">
-                <span>Kode Booking</span>
+                <span>Kode Reservasi</span>
                 <strong>
                     RSV-{{ str_pad($booking->id, 6, '0', STR_PAD_LEFT) }}
                 </strong>
             </div>
 
             <div class="detail-item">
-                <span>Nama Pemesan</span>
+                <span>Kode Pembayaran</span>
                 <strong>
-                    {{ $booking->user->name ?? '-' }}
+                    PAY-{{ date('Ymd') }}-{{ str_pad($booking->id, 6, '0', STR_PAD_LEFT) }}
                 </strong>
-            </div>
+                <div class="detail-item">
+                    <span>Nama Pemesan</span>
+                    <strong>
+                        {{ $booking->user->name ?? '-' }}
+                    </strong>
+                </div>
 
-            <div class="detail-item">
-                <span>Tipe Kamar</span>
-                <strong>
-                    {{ $booking->room->title ?? $booking->room->name ?? '-' }}
-                </strong>
-            </div>
+                <div class="detail-item">
+                    <span>Tipe Kamar</span>
+                    <strong>
+                        {{ $booking->roomVariant->name ?? '-' }}
+                    </strong>
+                </div>
 
-            <div class="detail-item">
-                <span>Check In</span>
-                <strong>
-                    {{ \Carbon\Carbon::parse($booking->check_in)->translatedFormat('d F Y') }}
-                </strong>
-            </div>
+                <div class="detail-item">
+                    <span>Check In</span>
+                    <strong>
+                        {{ \Carbon\Carbon::parse($booking->check_in)->translatedFormat('d F Y') }}
+                    </strong>
+                </div>
 
-            <div class="detail-item">
-                <span>Check Out</span>
-                <strong>
-                    {{ \Carbon\Carbon::parse($booking->check_out)->translatedFormat('d F Y') }}
-                </strong>
-            </div>
+                <div class="detail-item">
+                    <span>Check Out</span>
+                    <strong>
+                        {{ \Carbon\Carbon::parse($booking->check_out)->translatedFormat('d F Y') }}
+                    </strong>
+                </div>
 
-            <div class="detail-item">
-                <span>Total Pembayaran</span>
-                <strong class="text-success">
-                    Rp {{ number_format($booking->total_harga, 0, ',', '.') }}
-                </strong>
-            </div>
+                <div class="detail-item">
+                    <span>Total Pembayaran</span>
+                    <strong class="text-success">
+                        Rp {{ number_format($booking->total_harga, 0, ',', '.') }}
+                    </strong>
+                </div>
 
-            <div class="detail-item">
-                <span>Status Pembayaran</span>
-                <strong class="text-success">
-                    Lunas
-                </strong>
-            </div>
+                <div class="detail-item">
+                    <span>Status Pembayaran</span>
+                    <strong class="text-success">
+                        Lunas
+                    </strong>
+                </div>
 
-            <div class="detail-item">
-                <span>Tanggal Reservasi</span>
-                <strong>
-                    {{ $booking->created_at->format('d M Y H:i') }}
-                </strong>
-            </div>
+                <div class="detail-item">
+                    <span>Tanggal Reservasi</span>
+                    <strong>
+                        {{ $booking->created_at->format('d M Y H:i') }}
+                    </strong>
+                </div>
 
-            <hr>
+                <hr>
 
-            <div class="alert alert-light border mt-3">
-                <strong>Informasi:</strong><br>
-                Silakan tunjukkan kode booking saat check-in.
-                Jika ada perubahan reservasi, silakan hubungi admin hotel.
-            </div>
+                <div class="alert alert-light border mt-3">
+                    <strong>Informasi:</strong><br>
+                    Silakan tunjukkan kode booking saat check-in.
+                    Jika ada perubahan reservasi, silakan hubungi admin hotel.
+                </div>
 
-            <div class="d-flex justify-content-center gap-2 mt-4">
+                <div class="d-flex justify-content-center gap-2 mt-4">
 
-                <a href="{{ route('bookinghistory.index') }}" class="btn btn-primary action-btn">
-                    Kembali ke Riwayat
-                </a>
+                    <a href="{{ route('bookinghistory.index') }}" class="btn btn-primary action-btn">
+                        Kembali ke Riwayat
+                    </a>
 
-                <a href="{{ url('/') }}" class="btn btn-outline-secondary action-btn">
-                    Kembali ke Beranda
-                </a>
+                    <a href="{{ url('/') }}" class="btn btn-outline-secondary action-btn">
+                        Kembali ke Beranda
+                    </a>
+
+                </div>
 
             </div>
 
         </div>
 
+
     </div>
-
-
-</div>
-@endsection
+    @endsection

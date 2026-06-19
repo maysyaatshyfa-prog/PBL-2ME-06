@@ -68,12 +68,22 @@
         <div class="col-md-3">
             <div class="card p-3 mb-3">
                 <h6>Rentang Harga</h6>
-                <input type="range" class="form-range" min="200000" max="2200000" step="50000"
-                    value="{{ request('price',800000) }}" id="priceRange" name="price" form="filterForm">
+
+                <div id="priceSlider"></div>
+
                 <div class="d-flex justify-content-between mt-2">
-                    <small>Rp 0</small>
-                    <small id="priceValue">Rp 800.000</small>
+                    <small id="minPrice">Rp 0</small>
+                    <small id="maxPrice">Rp 2.200.000</small>
                 </div>
+
+                <!-- ikut form filterForm -->
+                <input type="hidden" name="min_price" id="min_price" form="filterForm">
+
+                <input type="hidden" name="max_price" id="max_price" form="filterForm">
+
+                <button type="submit" form="filterForm" class="btn btn-outline-secondary mt-3 w-100">
+                    Terapkan Harga
+                </button>
             </div>
 
             <div class="facility-box">
@@ -153,11 +163,9 @@
     let child = parseInt(document.getElementById("input_child").value) || 0;
 
     function toggleGuest(event) {
-
         event.stopPropagation();
 
-        const dropdown =
-            document.getElementById("guestDropdown");
+        const dropdown = document.getElementById("guestDropdown");
 
         dropdown.style.display =
             dropdown.style.display === "block" ?
@@ -168,69 +176,62 @@
     function changeValue(type, val) {
 
         if (type === "adult") {
-
             adult = Math.max(1, adult + val);
 
-            document.getElementById("adult").innerText =
-                adult;
-
-            document.getElementById("input_adult").value =
-                adult;
+            document.getElementById("adult").innerText = adult;
+            document.getElementById("input_adult").value = adult;
         }
 
         if (type === "child") {
-
             child = Math.max(0, child + val);
 
-            document.getElementById("child").innerText =
-                child;
-
-            document.getElementById("input_child").value =
-                child;
+            document.getElementById("child").innerText = child;
+            document.getElementById("input_child").value = child;
         }
 
         document.getElementById("guestText").innerText =
-            adult + " Dewasa, " +
-            child + " Anak";
-
-        document.getElementById("filterForm").submit();
+            adult + " Dewasa, " + child + " Anak";
     }
 
     document.addEventListener("click", function () {
-
-        document.getElementById("guestDropdown")
-            .style.display = "none";
-
+        document.getElementById("guestDropdown").style.display = "none";
     });
 
-    const priceRange =
-        document.getElementById("priceRange");
+    const slider = document.getElementById('priceSlider');
 
-    const priceValue =
-        document.getElementById("priceValue");
+    if (slider) {
 
-    if (priceRange) {
-
-        let hargaAwal =
-            Number(priceRange.value)
-            .toLocaleString("id-ID");
-
-        priceValue.innerText =
-            "Rp " + hargaAwal;
-
-        priceRange.addEventListener("input", function () {
-
-            let harga =
-                Number(this.value)
-                .toLocaleString("id-ID");
-
-            priceValue.innerText =
-                "Rp " + harga;
-
+        noUiSlider.create(slider, {
+            start: [
+                Number("{{ request('min_price', 0) }}"),
+                Number("{{ request('max_price', 2200000) }}")
+            ],
+            connect: true,
+            step: 50000,
+            range: {
+                min: 0,
+                max: 2200000
+            }
         });
+        const minPrice = document.getElementById('minPrice');
+        const maxPrice = document.getElementById('maxPrice');
 
-        priceRange.addEventListener("change", function () {
-            document.getElementById("filterForm").submit();
+        const inputMin = document.getElementById('min_price');
+        const inputMax = document.getElementById('max_price');
+
+        slider.noUiSlider.on('update', function (values) {
+
+            let min = Math.round(values[0]);
+            let max = Math.round(values[1]);
+
+            minPrice.innerText =
+                'Rp ' + min.toLocaleString('id-ID');
+
+            maxPrice.innerText =
+                'Rp ' + max.toLocaleString('id-ID');
+
+            inputMin.value = min;
+            inputMax.value = max;
         });
     }
 </script>

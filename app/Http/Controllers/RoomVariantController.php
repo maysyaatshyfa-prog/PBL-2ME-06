@@ -17,11 +17,14 @@ class RoomVariantController extends Controller
             $query->where('capacity', '>=', $total);
         }
 
-        // FILTER PRICE
-        if ($request->filled('price')) {
-            $query->where('price', '<=', $request->price);
-        }
+        // FILTER RENTANG HARGA
+if ($request->filled('min_price') && $request->filled('max_price')) {
 
+    $query->whereBetween('price', [
+        $request->min_price,
+        $request->max_price
+    ]);
+}
         // FILTER FACILITIES
         if ($request->filled('facilities')) {
             foreach ($request->facilities as $facility) {

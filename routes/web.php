@@ -8,6 +8,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomVariantController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CancellationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
@@ -41,7 +42,7 @@ Route::middleware('auth')->group(function () {
     ->name('booking.detail');
 
     Route::get('/bookinghistory', [BookingController::class, 'index'])->name('bookinghistory.index');
-    Route::post('/booking/cancel/{id}', [BookingController::class, 'cancel'])->name('booking.cancel');
+    Route::post('/cancellation/store', [CancellationController::class, 'store']) ->name('cancellation.store');
 
      /* PROFILE */
     Route::view('/profile', 'profile')->name('profile');

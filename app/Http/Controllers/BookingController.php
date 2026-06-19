@@ -17,7 +17,8 @@ class BookingController extends Controller
 {
    $bookings = Reservation::with([
     'roomNumber.variant',
-    'user'
+    'user',
+    'cancellation'
 ])
 ->where('user_id', Auth::id())
 ->latest()
@@ -26,15 +27,16 @@ class BookingController extends Controller
     return view('bookinghistory', compact('bookings'));
 }
 
-    public function show($id)
+  public function show($id)
 {
     $booking = Reservation::with([
-    'roomNumber.variant',
-    'user'
-])
-->where('id', $id)
-->where('user_id', Auth::id())
-->firstOrFail();
+        'roomNumber.variant',
+        'user',
+        'cancellation'
+    ])
+    ->where('id', $id)
+    ->where('user_id', Auth::id())
+    ->firstOrFail();
 
     return view('booking_detail', compact('booking'));
 }
