@@ -18,7 +18,7 @@
             <i class="bi bi-door-open"></i> Kelola Kamar
         </a>
 
-        <a href="/reservasi">
+        <a href="/admin/reservasi">
             <i class="bi bi-calendar-check"></i> Reservasi
         </a>
 

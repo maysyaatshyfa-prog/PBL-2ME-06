@@ -10,6 +10,7 @@ class RoomVariant extends Model
     'room_id',
     'name',
     'price',
+    'description',
     'capacity',
     'size',
     'image',
@@ -32,5 +33,11 @@ class RoomVariant extends Model
     );
 }
 
+public function type($type)
+{
+    $rooms = RoomVariant::where('slug', $type)->get();
+
+    return view('rooms.type', compact('rooms'));
+}
 
 }

@@ -67,3 +67,106 @@
     margin-top:20px;
     margin-bottom:20px;
 }
+
+.modal-content{
+    border:none;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.cancel-icon{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:#fff1f2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.cancel-icon i{
+    font-size:40px;
+    color:#dc3545;
+}
+
+.reason-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.reason-card{
+    border:1px solid #dee2e6;
+    border-radius:14px;
+    padding:14px 18px;
+    cursor:pointer;
+    transition:.3s;
+    display:flex;
+    align-items:center;
+}
+
+.reason-card:hover{
+    background:#f8f9fa;
+}
+
+.reason-card input{
+    margin-right:12px;
+}
+
+.reason-card:has(input:checked){
+    border:2px solid #dc3545;
+    background:#fff5f5;
+}
+.search-form{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.search-form input[type="text"]{
+    width:250px;
+}
+
+.search-form input[type="date"]{
+    width:170px;
+}
+
+.status-form{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-select{
+    width: 170px !important;
+    min-width: 170px;
+    max-width: 170px;
+    flex: none;
+}
+
+.status-form .btn{
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.status-wait{
+    background-color: #fff3cd !important;
+    color: #856404 !important;
+    border: 1px solid #ffe69c !important;
+}
+
+.status-stay{
+    background-color: #cfe2ff !important;
+    color: #084298 !important;
+    border: 1px solid #9ec5fe !important;
+}
+
+.status-cancel{
+    background-color: #f8d7da !important;
+    color: #842029 !important;
+    border: 1px solid #f1aeb5 !important;
+}

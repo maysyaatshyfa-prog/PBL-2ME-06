@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reservation;
 use App\Models\RoomNumber;
 use App\Models\RoomVariant;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Midtrans\Snap;
@@ -13,21 +14,172 @@ use Carbon\Carbon;
 
 class BookingController extends Controller
 {
-    public function index()
+    // =========================
+    // CONFIRM BOOKING + SNAP
+    // =========================
+    public function confirm(Request $request)
+    {
+        Config::$serverKey = config('midtrans.serverKey');
+        Config::$isProduction = config('midtrans.isProduction');
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
+
+        $variant = RoomVariant::findOrFail($request->room_variant_id);
+
+        $checkIn = Carbon::parse($request->check_in);
+        $checkOut = Carbon::parse($request->check_out);
+
+        $duration = max(1, $checkIn->diffInDays($checkOut));
+        $totalPrice = $variant->price * $duration;
+
+        $orderId = 'RSV-' . time();
+
+        $snapToken = Snap::getSnapToken([
+            'transaction_details' => [
+                'order_id' => $orderId,
+                'gross_amount' => $totalPrice,
+            ],
+            'customer_details' => [
+                'first_name' => Auth::user()->name ?? $request->nama,
+                'email' => Auth::user()->email ?? $request->email,
+                'phone' => $request->phone,
+            ],
+        ]);
+
+        $roomNumber = RoomNumber::where('room_variant_id', $variant->id)
+    ->whereDoesntHave('reservations', function ($q) use ($request) {
+        $q->where('status', '!=', 'Batal')
+          ->where(function ($query) use ($request) {
+              $query->where('check_in', '<', $request->check_out)
+                    ->where('check_out', '>', $request->check_in);
+          });
+    })
+    ->first();
+
+        if (!$roomNumber) {
+            return back()->with('error', 'Kamar sudah penuh');
+        }
+
+        // =========================
+        // SIMPAN RESERVATION
+        // =========================
+        $reservation = Reservation::create([
+            'user_id' => Auth::id(),
+            'room_id' => $variant->room_id,
+            'room_variant_id' => $variant->id,
+            'room_number_id' => $roomNumber->id,
+
+            'customer_name' => $request->nama,
+            'customer_email' => $request->email,
+            'customer_phone' => $request->phone,
+            'guest_name' => $request->guest_name,
+            'special_request' => $request->special_request,
+
+            'check_in' => $request->check_in,
+            'check_out' => $request->check_out,
+
+            'total_harga' => $totalPrice,
+
+            'status_pembayaran' => 'Lunas',
+
+            'order_id' => $orderId,
+        ]);
+
+        return view('konfirmasi', [
+    'reservation' => $reservation,
+    'snapToken'   => $snapToken,
+    'variant'     => $variant,
+    'duration'    => $duration,
+    'totalPrice'  => $totalPrice,
+
+    'checkin'     => $request->check_in,
+    'checkout'    => $request->check_out,
+    'adult'       => $request->adult,
+    'child'       => $request->child,
+]);
+    }
+
+    // =========================
+    // MIDTRANS NOTIFICATION
+    // =========================
+    public function notification()
+    {
+        Config::$serverKey = config('midtrans.serverKey');
+        Config::$isProduction = config('midtrans.isProduction');
+
+        $notif = new \Midtrans\Notification();
+
+        $orderId = $notif->order_id;
+        $status = $notif->transaction_status;
+
+       $reservation = Reservation::where('order_id', $orderId)->first();
+
+if ($reservation) {
+
+    $reservation->update([
+        'status_pembayaran' => 'Lunas'
+    ]);
+
+    \App\Models\Payment::updateOrCreate(
+        [
+            'reservation_id' => $reservation->id
+        ],
+        [
+            'order_id' => $reservation->order_id,
+            'total_harga' => $reservation->total_harga,
+            'status_pembayaran' => 'Lunas',
+        ]
+    );
+}
+
+        return response()->json(['status' => 'ok']);
+    }
+
+    // =========================
+    // SUCCESS PAGE
+    // =========================
+    public function success()
+    {
+        $reservation = Reservation::where('user_id', Auth::id())
+    ->latest()
+    ->firstOrFail();
+
+        if (!$reservation) {
+            return redirect('/');
+        }
+
+        $reservation->update([
+            'status_pembayaran' => 'Lunas'
+        ]);
+
+        \App\Models\Payment::updateOrCreate(
+            ['reservation_id' => $reservation->id],
+            [
+                'status_pembayaran' => 'Lunas',
+                'total_harga' => $reservation->total_harga,
+            ]
+        );
+
+        $bookingCode = 'RSV-' . str_pad($reservation->id, 6, '0', STR_PAD_LEFT);
+
+        return view('success', compact('reservation', 'bookingCode'));
+    }
+
+    //  BOOKING HISTORY     
+public function index()
 {
-   $bookings = Reservation::with([
-    'roomNumber.variant',
-    'user',
-    'cancellation'
-])
-->where('user_id', Auth::id())
-->latest()
-->get();
+    $bookings = Reservation::with([
+        'roomNumber.variant',
+        'cancellation'
+    ])
+    ->where('user_id', Auth::id())
+    ->latest()
+    ->paginate(10);
 
     return view('bookinghistory', compact('bookings'));
 }
 
-  public function show($id)
+public function show($id)
 {
     $booking = Reservation::with([
         'roomNumber.variant',
@@ -41,140 +193,24 @@ class BookingController extends Controller
     return view('booking_detail', compact('booking'));
 }
 
-    public function cancel($id)
-    {
-        $booking = Reservation::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
-
-        $booking->update([
-            'status' => 'Batal'
-        ]);
-
-        return redirect()->back()
-            ->with('success', 'Reservasi berhasil dibatalkan.');
-    }
-
-    public function create($id)
-    {
-        return view('booking.create', compact('id'));
-    }
-
-    public function confirm(Request $request)
-    {
-        Config::$serverKey = config('midtrans.serverKey');
-        Config::$isProduction = config('midtrans.isProduction');
-        Config::$isSanitized = true;
-        Config::$is3ds = true;
-
-        $variant = RoomVariant::findOrFail($request->room_variant_id);
-
-        $dateIn = Carbon::parse($request->check_in);
-        $dateOut = Carbon::parse($request->check_out);
-
-        $duration = max(1, $dateIn->diffInDays($dateOut));
-        $totalPrice = $variant->price * $duration;
-
-        $checkin = $request->check_in;
-        $checkout = $request->check_out;
-        $adult = $request->adult;
-        $child = $request->child;
-
-        $user = Auth::user();
-
-        $snapToken = Snap::getSnapToken([
-            'transaction_details' => [
-                'order_id' => 'RSV-' . time(),
-                'gross_amount' => $totalPrice,
-            ],
-            'customer_details' => [
-                'first_name' => $user->name,
-                'email' => $user->email,
-            ]
-        ]);
-
-        session([
-            'room_id' => $variant->room_id,
-            'check_in' => $checkin,
-            'check_out' => $checkout,
-            'total_harga' => $totalPrice,
-        ]);
-
-        return view('konfirmasi', compact(
-            'variant',
-            'duration',
-            'totalPrice',
-            'snapToken',
-            'checkin',
-            'checkout',
-            'adult',
-            'child'
-        ));
-    }
-
-    public function payment()
-    {
-        return view('booking.payment');
-    }
-
-    public function success()
+public function uploadKtp(Request $request, $id)
 {
-    $roomId = session('room_id');
+    $request->validate([
+        'ktp' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+    ]);
 
-    $variant = RoomVariant::where(
-        'room_id',
-        $roomId
-    )->first();
+    $booking = Reservation::findOrFail($id);
 
-    $roomNumber = RoomNumber::where(
-            'room_variant_id',
-            $variant->id
-        )
-        ->where('status', 'tersedia')
-        ->first();
+    if ($request->hasFile('ktp')) {
+        $file = $request->file('ktp');
+        $filename = time().'_'.$file->getClientOriginalName();
+        $file->storeAs('ktp', $filename, 'public');
 
-    if (!$roomNumber) {
-
-        return redirect('/')
-            ->with(
-                'error',
-                'Kamar sudah penuh'
-            );
+        $booking->ktp = $filename;
+        $booking->save();
     }
 
-    $roomNumber->update([
-        'status' => 'terisi'
-    ]);
-
-    $reservation = Reservation::create([
-        'user_id'            => Auth::id(),
-        'room_id'            => $roomId,
-        'room_number_id'     => $roomNumber->id,
-        'check_in'           => session('check_in'),
-        'check_out'          => session('check_out'),
-        'total_harga'        => session('total_harga'),
-        'status'             => 'Dalam Proses',
-        'status_pembayaran'  => 'Lunas',
-    ]);
-
-    $bookingCode = 'RSV-' . str_pad(
-        $reservation->id,
-        6,
-        '0',
-        STR_PAD_LEFT
-    );
-
-    return view(
-        'success',
-        compact(
-            'reservation',
-            'bookingCode'
-        )
-    );
+    return back()->with('success', 'KTP berhasil diupload');
 }
 
-    public function storePayment(Request $request, $id)
-    {
-        return redirect()->route('payment.success');
-    }
 }

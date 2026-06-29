@@ -136,27 +136,31 @@
 </div>
 
 {{-- MIDTRANS SNAP --}}
-<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}">
+<script
+    src="https://app.sandbox.midtrans.com/snap/snap.js"
+    data-client-key="{{ config('midtrans.clientKey') }}">
 </script>
 
 <script>
     document.getElementById('pay-button').onclick = function () {
-        snap.pay('{{ $snapToken }}', {
+        snap.pay(@json($snapToken), {
             onSuccess: function (result) {
                 window.location.href = "/payment/success";
             },
+
             onPending: function (result) {
                 window.location.href = "/payment/pending";
             },
+
             onError: function (result) {
                 alert("Pembayaran gagal!");
-                console.log(result);
             },
+
             onClose: function () {
-                alert("Kamu menutup popup pembayaran");
+                console.log("Popup ditutup");
             }
         });
+
     };
 </script>
-
 @endsection

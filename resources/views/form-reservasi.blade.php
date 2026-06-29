@@ -35,21 +35,21 @@
                         <div class="mb-3">
                             <label class="form-label">Nama Lengkap *</label>
                             <input type="text" name="nama" class="form-control"
-                                value="{{ auth()->check() ? auth()->user()->name : '' }}"
-                                {{ auth()->check() ? 'readonly' : '' }}>
+                                value="{{ auth()->user()->name ?? old('nama') }}"
+                                {{ auth()->check() ? 'readonly' : '' }} required>
                         </div>
+
                         <div class="mb-3">
                             <label class="form-label">Email *</label>
                             <input type="email" name="email" class="form-control"
-                                value="{{ auth()->check() ? auth()->user()->email : '' }}"
-                                {{ auth()->check() ? 'readonly' : '' }}>
+                                value="{{ auth()->user()->email ?? old('email') }}"
+                                {{ auth()->check() ? 'readonly' : '' }} required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">No. Handphone *</label>
-                            <input type="text" name="phone" class="form-control" placeholder="08xxxxxxxxxx">
+                            <input type="text" name="phone" class="form-control" value="{{ old('phone') }}" required>
                         </div>
-
                         <h5 class="fw-bold mt-4 mb-3">Informasi Tamu yang Menginap</h5>
 
                         <div class="mb-3">

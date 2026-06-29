@@ -35,12 +35,14 @@
 
             <div class="detail-item">
                 <span>Kode Booking</span>
-                <strong>RSV-{{ date('YmdHis') }}</strong>
+                <strong>{{ $bookingCode }}</strong>
             </div>
 
             <div class="detail-item">
                 <span>Nama Pemesan</span>
-                <strong>{{ auth()->user()->name ?? '-' }}</strong>
+                <strong>
+                   {{ $reservation->customer_name ?? $reservation->guest_name ?? '-' }}
+                </strong>
             </div>
 
             <div class="detail-item">

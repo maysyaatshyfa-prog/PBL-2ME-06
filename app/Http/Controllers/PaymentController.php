@@ -9,40 +9,43 @@ use App\Models\Reservation;
 
 class PaymentController extends Controller
 {
-    public function __construct()
+    public function pay($id)
     {
         Config::$serverKey = config('midtrans.serverKey');
         Config::$isProduction = config('midtrans.isProduction');
         Config::$isSanitized = true;
         Config::$is3ds = true;
+
+        $reservation = Reservation::findOrFail($id);
+
+        $orderId = 'RSV-'.$reservation->id.'-'.time();
+        $totalPrice = (int) $reservation->total_harga;
+
+        $name = $reservation->customer_name;
+        $email = $reservation->customer_email;
+        $phone = $reservation->customer_phone;
+
+        try {
+            $snapToken = Snap::getSnapToken([
+                'transaction_details' => [
+                    'order_id' => $orderId,
+                    'gross_amount' => $totalPrice,
+                ],
+                'customer_details' => [
+                    'first_name' => $name,
+                    'email' => $email,
+                    'phone' => $phone,
+                ],
+                'enabled_payments' => [
+                    'bank_transfer',
+                    'gopay',
+                    'qris'
+                ],
+            ]);
+        } catch (\Exception $e) {
+            return "Gagal Midtrans: ".$e->getMessage();
+        }
+
+        return view('payment', compact('reservation', 'snapToken'));
     }
-
-    public function pay($id)
-{
-    $reservation = Reservation::findOrFail($id);
-
-    if ($reservation->total_price <= 0) {
-        dd('TOTAL PRICE INVALID', $reservation->total_price);
-    }
-
-    $orderId = 'RSV-'.$reservation->id.'-'.time();
-    $totalPrice = (int) $reservation->total_price;
-
-    try {
-        $snapToken = Snap::getSnapToken([
-            'transaction_details' => [
-                'order_id'     => $orderId,
-                'gross_amount' => $totalPrice,
-            ],
-            'customer_details' => [
-                'first_name' => auth()->user()->name ?? 'Guest',
-                'email'      => auth()->user()->email ?? 'guest@mail.com',
-            ]
-        ]);
-    } catch (\Exception $e) {
-        return "Gagal terhubung ke Midtrans: " . $e->getMessage();
-    }
-
-    return view('payment', compact('reservation', 'snapToken'));
-}
 }

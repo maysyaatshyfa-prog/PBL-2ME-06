@@ -12,11 +12,21 @@ class Reservation extends Model {
     'room_id',
     'room_variant_id',
     'room_number_id',
+    'ktp',
+
+    'customer_name',
+    'customer_email',
+    'customer_phone',
+
+    'guest_name',
+    'special_request',
+
     'check_in',
     'check_out',
     'total_harga',
+
     'status',
-    'status_pembayaran',
+    'status_pembayaran',    
 ];
 
     public function user() {

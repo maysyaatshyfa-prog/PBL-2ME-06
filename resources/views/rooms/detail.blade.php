@@ -49,7 +49,7 @@
 
                     <div class="detail-card">
                         <h3>Deskripsi Kamar</h3>
-                        <p>{{ $variant->room->description }}</p>
+                        <p>{{ $variant->description }}</p>
                     </div>
 
                     <div class="detail-card">

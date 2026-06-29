@@ -1642,6 +1642,36 @@ textarea.form-control {
     border-radius: 50%;
 }
 
+.status-form{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.status-form select{
+    flex:1;
+    height:42px;
+    border-radius:8px;
+    border:1px solid #dcdcdc;
+    padding:0 12px;
+    font-size:14px;
+}
+
+.status-form button{
+    width:110px;
+    height:42px;
+    border:none;
+    border-radius:8px;
+    background:#198754;
+    color:#fff;
+    font-weight:500;
+    transition:.2s;
+}
+
+.status-form button:hover{
+    background:#157347;
+}
+
 /* MOBILE */
 
 @media(max-width:768px) {

@@ -21,7 +21,6 @@
                         <th class="py-3">Tipe Kamar</th>
                         <th class="py-3">Check-in</th>
                         <th class="py-3">Check-out</th>
-                        <th class="py-3">Status Reservasi</th>
                         <th class="py-3">Status Pembayaran</th>
                         <th class="py-3">Aksi</th>
                     </tr>
@@ -50,9 +49,6 @@
                                         {{ optional(optional($item->roomNumber)->variant)->name ?? 'Kamar Tidak Ditemukan' }}
                                     </div>
 
-                                    <small class="text-muted">
-                                        Kamar {{ optional($item->roomNumber)->room_number }}
-                                    </small>
 
                                 </div>
 
@@ -66,30 +62,6 @@
 
                         <td>
                             {{ \Carbon\Carbon::parse($item->check_out)->translatedFormat('d M Y') }}
-                        </td>
-
-                        <td>
-
-                            @if($item->status == 'Selesai')
-
-                            <span class="badge bg-success px-3 py-2 rounded-pill">
-                                Selesai
-                            </span>
-
-                            @elseif($item->status == 'Batal')
-
-                            <span class="badge bg-danger px-3 py-2 rounded-pill">
-                                Batal
-                            </span>
-
-                            @else
-
-                            <span class="badge bg-primary px-3 py-2 rounded-pill">
-                                Dalam Proses
-                            </span>
-
-                            @endif
-
                         </td>
 
                         <td>
@@ -119,20 +91,38 @@
                                     Detail
                                 </a>
 
-                                @if($item->status_pembayaran != 'Lunas')
-                                <a href="{{ route('payment.pay', $item->id) }}"
-                                    class="btn btn-success btn-sm rounded-pill px-3">
-                                    Bayar
-                                </a>
-                                @endif
-
                                 @if($item->cancellation)
+
+                                @php
+                                $statusPembatalan = strtolower($item->cancellation->status);
+                                @endphp
+
+                                @if($statusPembatalan == 'menunggu')
 
                                 <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
                                     Menunggu Persetujuan
                                 </span>
 
-                                @elseif($item->status != 'Selesai' && $item->status != 'Batal')
+                                @elseif($statusPembatalan == 'disetujui')
+
+                                <span class="badge bg-danger px-3 py-2 rounded-pill">
+                                    Reservasi Dibatalkan
+                                </span>
+
+                                @elseif($statusPembatalan == 'ditolak')
+
+                                <button type="button" class="btn btn-danger btn-sm rounded-pill px-3"
+                                    data-bs-toggle="modal" data-bs-target="#cancelModal{{ $item->id }}">
+                                    Batalkan
+                                </button>
+
+                                <span class="badge bg-secondary px-3 py-2 rounded-pill">
+                                    Pembatalan Ditolak
+                                </span>
+
+                                @endif
+
+                                @else
 
                                 <button type="button" class="btn btn-danger btn-sm rounded-pill px-3"
                                     data-bs-toggle="modal" data-bs-target="#cancelModal{{ $item->id }}">
@@ -182,40 +172,92 @@
 
                 <input type="hidden" name="reservation_id" value="{{ $item->id }}">
 
-                <div class="modal-header">
+                <div class="modal-body px-4">
 
-                    <h5 class="modal-title">
-                        Ajukan Pembatalan Reservasi
-                    </h5>
+                    <div class="text-center mb-4">
+                        <div class="cancel-icon mx-auto mb-3">
+                            <i class="bi bi-x-circle"></i>
+                        </div>
 
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">
-                    </button>
+                        <h5 class="fw-bold mb-2">
+                            Batalkan Reservasi
+                        </h5>
 
-                </div>
+                        <p class="text-muted small mb-0">
+                            Reservasi yang dibatalkan tidak dapat dipulihkan kembali.
+                        </p>
+                    </div>
 
-                <div class="modal-body">
-
-                    <label class="form-label">
-                        Alasan Pembatalan
+                    <label class="fw-semibold mb-3">
+                        Pilih alasan pembatalan
                     </label>
 
-                    <textarea name="reason" class="form-control" rows="4" required
-                        placeholder="Masukkan alasan pembatalan reservasi"></textarea>
+                    <div class="reason-list">
+
+                        <label class="reason-card">
+                            <input type="radio" name="reason" value="Perubahan rencana perjalanan" required>
+
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="bi bi-calendar-event reason-icon"></i>
+                                <span>Perubahan rencana perjalanan</span>
+                            </div>
+                        </label>
+
+                        <label class="reason-card">
+                            <input type="radio" name="reason" value="Menemukan hotel lain">
+
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="bi bi-building reason-icon"></i>
+                                <span>Menemukan hotel lain</span>
+                            </div>
+                        </label>
+
+                        <label class="reason-card">
+                            <input type="radio" name="reason" value="Masalah pembayaran">
+
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="bi bi-credit-card reason-icon"></i>
+                                <span>Masalah pembayaran</span>
+                            </div>
+                        </label>
+
+                        <label class="reason-card">
+                            <input type="radio" name="reason" value="Tidak jadi menginap">
+
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="bi bi-door-closed reason-icon"></i>
+                                <span>Tidak jadi menginap</span>
+                            </div>
+                        </label>
+
+                        <label class="reason-card">
+                            <input type="radio" name="reason" value="Lainnya">
+
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="bi bi-three-dots reason-icon"></i>
+                                <span>Lainnya</span>
+                            </div>
+                        </label>
+
+                    </div>
+                    <div class="mt-3 d-none lainnya-box">
+                        <textarea class="form-control" name="other_reason" rows="3"
+                            placeholder="Tuliskan alasan pembatalan...">
+                        </textarea>
+                    </div>
+                    <div class="modal-footer border-0 px-4 pb-4">
+
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">
+                            Kembali
+                        </button>
+
+                        <button type="submit" class="btn btn-danger rounded-pill px-4">
+                            Kirim Permohonan
+                        </button>
+
+                    </div>
 
                 </div>
-
-                <div class="modal-footer">
-
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Tutup
-                    </button>
-
-                    <button type="submit" class="btn btn-danger">
-                        Kirim Permohonan
-                    </button>
-
-                </div>
-
             </form>
 
         </div>
@@ -227,15 +269,55 @@
 @endif
 
 @endforeach
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        document.querySelectorAll('.modal').forEach(modal => {
+
+            const radios = modal.querySelectorAll('input[name="reason"]');
+            const lainnyaBox = modal.querySelector('.lainnya-box');
+            const textarea = lainnyaBox.querySelector('textarea');
+
+            radios.forEach(radio => {
+
+                radio.addEventListener('change', function () {
+
+                    if (this.value === 'Lainnya') {
+
+                        lainnyaBox.classList.remove('d-none');
+                        textarea.setAttribute('required', true);
+
+                    } else {
+
+                        lainnyaBox.classList.add('d-none');
+                        textarea.removeAttribute('required');
+                        textarea.value = '';
+
+                    }
+
+                });
+
+            });
+
+        });
+
+    });
+</script>
 @if(session('success'))
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+
         Swal.fire({
             icon: 'success',
-            title: 'Berhasil!',
-            text: '{{ session("success") }}',
-            confirmButtonText: 'OK'
+            title: 'Permohonan Terkirim',
+            html: `
+            Permohonan pembatalan reservasi telah berhasil dikirim.<br>
+            Silakan tunggu persetujuan admin.
+        `,
+            confirmButtonText: 'Mengerti',
+            confirmButtonColor: '#dc3545'
         });
+
     });
 </script>
 @endif

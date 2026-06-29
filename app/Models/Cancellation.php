@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 class Cancellation extends Model {
     protected $fillable = [
     'reservation_id',
-    'user_id',
-    'alasan',
+    'reason',
+    'other_reason',
     'status'
 ];
 

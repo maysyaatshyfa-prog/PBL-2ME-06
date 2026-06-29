@@ -106,7 +106,7 @@
                                 </td>
 
                                 <td>
-                                     {{ $room->room_numbers_count ?? 0 }}
+                                    {{ $room->room_numbers_count ?? 0 }}
                                 </td>
 
                                 <td>
@@ -134,6 +134,7 @@
         @json($room->bed_type),
         @json($room->room_view),
         @json($room->facilities),
+         @json($room->description),
         "{{ asset('images/'.$room->image) }}",
         @json($room->gallery)
     )'>
@@ -226,6 +227,11 @@
                         <div class="col-md-6 mb-3">
                             <label>View Kamar</label>
                             <input type="text" name="room_view" id="edit_room_view" class="form-control">
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <label>Deskripsi Kamar</label>
+                            <textarea name="description" id="edit_description" rows="5" class="form-control"></textarea>
                         </div>
 
                         <div class="col-12 mb-3">
@@ -353,6 +359,7 @@
         bed_type,
         room_view,
         facilities,
+        description,
         image,
         gallery
     ) {
@@ -360,6 +367,7 @@
         document.getElementById('edit_name').value = name;
         document.getElementById('edit_price').value = price;
         document.getElementById('edit_capacity').value = capacity;
+        document.getElementById('edit_description').value = description;
         document.getElementById('edit_size').value = size;
         document.getElementById('edit_bed_type').value = bed_type;
         document.getElementById('edit_room_view').value = room_view;

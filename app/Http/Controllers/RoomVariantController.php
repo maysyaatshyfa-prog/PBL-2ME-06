@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Room;
 use Illuminate\Http\Request;
 use App\Models\RoomVariant;
 
@@ -11,49 +12,73 @@ class RoomVariantController extends Controller
     {
         $query = RoomVariant::query();
 
-        // FILTER CAPACITY (adult + child)
+        // FILTER JUMLAH TAMU
         if ($request->filled('adult') || $request->filled('child')) {
-            $total = ($request->adult ?? 0) + ($request->child ?? 0);
-            $query->where('capacity', '>=', $total);
+
+            $totalGuest = ($request->adult ?? 0) + ($request->child ?? 0);
+
+            $query->where('capacity', '>=', $totalGuest);
         }
 
-        // FILTER RENTANG HARGA
-if ($request->filled('min_price') && $request->filled('max_price')) {
+        // FILTER HARGA
+        if ($request->filled('min_price') && $request->filled('max_price')) {
 
-    $query->whereBetween('price', [
-        $request->min_price,
-        $request->max_price
-    ]);
-}
-        // FILTER FACILITIES
+            $query->whereBetween('price', [
+                $request->min_price,
+                $request->max_price
+            ]);
+        }
+
+        // FILTER FASILITAS
         if ($request->filled('facilities')) {
+
             foreach ($request->facilities as $facility) {
+
                 $query->where('facilities', 'LIKE', '%' . $facility . '%');
+
             }
+
         }
 
+        // DATA HASIL FILTER
         $rooms = $query->get();
 
-        // AMBIL FASILITAS UNIK 
-        $allFacilities = collect($rooms)
+        // AMBIL SEMUA FASILITAS DARI DATABASE
+        $allFacilities = RoomVariant::all()
             ->flatMap(function ($room) {
                 return explode(',', $room->facilities ?? '');
             })
-            ->map(fn($f) => trim($f))
+            ->map(fn ($facility) => trim($facility))
             ->filter()
             ->unique()
+            ->sort()
             ->values();
 
-        return view('rooms.index', [
-            'rooms' => $rooms,
-            'allFacilities' => $allFacilities
-        ]);
+        return view('rooms.index', compact(
+            'rooms',
+            'allFacilities'
+        ));
     }
 
     public function show($id)
-    {
-        $variant = RoomVariant::with('room')->findOrFail($id);
+{
+    $variant = RoomVariant::with('room')->findOrFail($id);
 
-        return view('rooms.detail', compact('variant'));
-    }
+    return view('rooms.detail', compact('variant'));
+}
+
+public function type($type)
+{
+    $room = Room::where('type', $type)->firstOrFail();
+
+    $variants = RoomVariant::where('room_id', $room->id)->get();
+
+    return view('rooms.type', [
+        'room' => $room,
+        'variants' => $variants,
+        'typeKey' => $type
+    ]);
+}
+
+    
 }

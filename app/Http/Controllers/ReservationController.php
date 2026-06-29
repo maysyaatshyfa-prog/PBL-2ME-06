@@ -92,6 +92,7 @@ class ReservationController extends Controller
         $reservation = Reservation::create([
             'user_id' => auth()->id(),
             'room_id' => $variant->id,
+            'room_variant_id' => $variant->id,
             'room_number_id' => $roomNumber->id,
             'check_in' => $request->check_in,
             'check_out' => $request->check_out,
@@ -106,16 +107,5 @@ class ReservationController extends Controller
 
         return redirect()->route('reservasi.index')
             ->with('success', 'Reservasi berhasil dibuat');
-    }
-
-    public function index()
-    {
-        $reservations = Reservation::with([
-            'user',
-            'roomVariant',
-            'roomNumber'
-        ])->latest()->get();
-
-        return view('admin.reservasi', compact('reservations'));
     }
 }

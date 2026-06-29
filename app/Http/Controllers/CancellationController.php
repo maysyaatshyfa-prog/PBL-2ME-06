@@ -16,11 +16,11 @@ class CancellationController extends Controller
         ]);
 
         Cancellation::create([
-            'reservation_id' => $request->reservation_id,
-            'user_id'        => Auth::id(),
-            'alasan'         => $request->reason,
-            'status'         => 'Menunggu'
-        ]);
+    'reservation_id' => $request->reservation_id,
+    'reason'         => $request->reason,
+    'other_reason'   => $request->other_reason,
+    'status'         => 'Menunggu'
+]);
 
         return back()->with(
             'success',

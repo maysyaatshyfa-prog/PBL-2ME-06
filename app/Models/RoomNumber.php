@@ -20,4 +20,13 @@ class RoomNumber extends Model
             'room_variant_id'
         );
     }
+
+  
+    public function reservations()
+    {
+        return $this->hasMany(
+            Reservation::class,
+            'room_number_id'
+        );
+    }
 }

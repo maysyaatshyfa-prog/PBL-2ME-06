@@ -32,8 +32,11 @@
             <input type="hidden" name="adult" id="input_adult" value="2">
             <input type="hidden" name="child" id="input_child" value="0">
             <div class="search-box">
-                <input type="date" name="checkin" class="form-control" value="{{ request('checkin') }}">
-                <input type="date" name="checkout" class="form-control" value="{{ request('checkout') }}">
+                <input type="date" name="checkin" class="form-control" min="{{ date('Y-m-d') }}"
+                    value="{{ request('checkin') }}">
+
+                <input type="date" name="checkout" class="form-control" min="{{ date('Y-m-d') }}"
+                    value="{{ request('checkout') }}">
 
                 <div class="guest-wrapper">
                     <div class="guest-box" onclick="toggleGuest(event)">
@@ -78,7 +81,7 @@
             <img src="/images/STANDAR.jpeg" alt="">
             <h5>Standard Room</h5>
             <p>Rp.500.000-800.000 / malam</p>
-            <a href="/rooms/standard">
+            <a href="{{ url('/rooms/type/standard') }}">
                 <button>Lihat Detail</button>
             </a>
         </div>
@@ -86,7 +89,7 @@
             <img src="/images/DULEXE.jpeg" alt="">
             <h5>Deluxe Room</h5>
             <p>Rp.800.000-1.400.000 / malam</p>
-            <a href="/rooms/deluxe">
+            <a href="{{ url('/rooms/type/deluxe') }}">
                 <button>Lihat Detail</button>
             </a>
         </div>
@@ -95,7 +98,7 @@
             <img src="/images/SUITE.jpg" alt="">
             <h5>Suite Room</h5>
             <p>Rp.1.400.000-2.200.000 / malam</p>
-            <a href="/rooms/suite">
+            <a href="{{ url('/rooms/type/suite') }}">
                 <button>Lihat Detail</button>
             </a>
         </div>

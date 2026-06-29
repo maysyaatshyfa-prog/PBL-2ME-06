@@ -50,11 +50,12 @@
             <div class="col-md-4">
                 <div class="card-click p-4 d-flex flex-column align-items-center justify-content-center"
                     style="min-height: 155px; border-radius: 12px;">
-                    <h2 class="stat-number text-warning m-0">
-                        {{ $menungguPembayaran }}
+                    <h2 class="stat-number text-success m-0">
+                        {{ $totalPembayaran }}
                     </h2>
+
                     <div class="stat-card-title text-muted text-uppercase mt-2">
-                        Menunggu Pembayaran
+                        Total Pembayaran
                     </div>
                 </div>
             </div>
@@ -149,21 +150,19 @@
                                     {{ $item->check_out }}
                                 </td>
                                 <td>
-                                    @if($item->status == 'Lunas')
+                                    @if($item->status_pembayaran == 'Lunas')
                                     <span class="badge bg-success">
-                                        {{ $item->status }}
+                                        Lunas
                                     </span>
-                                    @elseif($item->status == 'Menunggu Pembayaran')
+
+                                    @elseif($item->status_pembayaran == 'Menunggu Pembayaran')
                                     <span class="badge bg-warning text-dark">
-                                        {{ $item->status }}
+                                        Menunggu Pembayaran
                                     </span>
-                                    @elseif($item->status == 'Dibatalkan')
-                                    <span class="badge bg-danger">
-                                        {{ $item->status }}
-                                    </span>
+
                                     @else
                                     <span class="badge bg-secondary">
-                                        {{ $item->status }}
+                                        {{ $item->status_pembayaran }}
                                     </span>
                                     @endif
                                 </td>
