@@ -33,11 +33,6 @@ class RoomVariant extends Model
     );
 }
 
-public function type($type)
-{
-    $rooms = RoomVariant::where('slug', $type)->get();
 
-    return view('rooms.type', compact('rooms'));
-}
 
 }
